@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "489927332360",
+    "project_id": "oneweek-ebc83",
+    "storage_bucket": "oneweek-ebc83.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489927332360:android:13196b37a579cf2f87b7bd",
+        "android_client_info": {
+          "package_name": "com.example.oneweekenglish"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4aL5MC5C_x88Fc_RB0d6EnSs0yzahMIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
