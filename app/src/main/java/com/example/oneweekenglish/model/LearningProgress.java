@@ -4,34 +4,45 @@ import java.util.List;
 
 public class LearningProgress {
     private String id;
-    private List<LessionProgress> lessionProgress;
+    private User user;
+    private List<LessonProgress> lessonProgress;
     //constructor
 
-    public LearningProgress(String id, List<LessionProgress> lessionProgress) {
+    public LearningProgress() {
+    }
+
+    public LearningProgress(List<LessonProgress> lessonProgress, User user, String id) {
+        this.lessonProgress = lessonProgress;
+        this.user = user;
         this.id = id;
-        this.lessionProgress = lessionProgress;
     }
-    public LearningProgress(List<LessionProgress> lessionProgress) {
-        this.lessionProgress = lessionProgress;
+
+    public LearningProgress(User user, List<LessonProgress> lessonProgress) {
+        this.user = user;
+        this.lessonProgress = lessonProgress;
     }
-    //getters
 
     public String getId() {
         return id;
     }
 
-    public List<LessionProgress> getLessionProgress() {
-        return lessionProgress;
-    }
-
-    //setters
-
-
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setLessionProgress(List<LessionProgress> lessionProgress) {
-        this.lessionProgress = lessionProgress;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<LessonProgress> getLessonProgress() {
+        return lessonProgress;
+    }
+
+    public void setLessonProgress(List<LessonProgress> lessonProgress) {
+        this.lessonProgress = lessonProgress;
     }
 }

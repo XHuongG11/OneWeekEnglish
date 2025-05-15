@@ -1,6 +1,6 @@
 package com.example.oneweekenglish.model;
 
-public class Lession {
+public class Lesson {
     private String id;
     private String name;
     private FillBlank fillBlankPractice;
@@ -9,7 +9,11 @@ public class Lession {
     private MatchWord matchWordPractice;
 
     //constructor
-    public Lession(String id, String name, FillBlank fillBlankPractice, Grammar grammarPractice, LearnWord learnWordPractice, MatchWord matchWordPractice) {
+
+    public Lesson() {
+    }
+
+    public Lesson(String id, String name, FillBlank fillBlankPractice, Grammar grammarPractice, LearnWord learnWordPractice, MatchWord matchWordPractice) {
         this.id = id;
         this.name = name;
         this.fillBlankPractice = fillBlankPractice;
@@ -17,7 +21,7 @@ public class Lession {
         this.learnWordPractice = learnWordPractice;
         this.matchWordPractice = matchWordPractice;
     }
-    public Lession(String name, FillBlank fillBlankPractice, Grammar grammarPractice, LearnWord learnWordPractice, MatchWord matchWordPractice) {
+    public Lesson(String name, FillBlank fillBlankPractice, Grammar grammarPractice, LearnWord learnWordPractice, MatchWord matchWordPractice) {
         this.name = name;
         this.fillBlankPractice = fillBlankPractice;
         this.grammarPractice = grammarPractice;

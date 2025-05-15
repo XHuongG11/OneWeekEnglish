@@ -8,6 +8,9 @@ public class Question {
     private String content;
     //constructor
 
+    public Question() {
+    }
+
     public Question(String id, String urlImage, String content) {
         this.id = id;
         this.urlImage = urlImage;

@@ -12,7 +12,10 @@ public class Word {
     private String type;
     //constructor
 
-    public Word(String id, String content, List<String> meanings, List<String> definitions, String ipa, String imageUrl,String type) {
+    public Word() {
+    }
+
+    public Word(String id, String content, List<String> meanings, List<String> definitions, String ipa, String imageUrl, String type) {
         this.id = id;
         this.content = content;
         this.meanings = meanings;

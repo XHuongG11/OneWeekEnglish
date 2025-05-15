@@ -8,7 +8,10 @@ public class Grammar {
     private List<Question> questions;
     //constructor
 
-    public Grammar(String id,List<Question> questions) {
+    public Grammar() {
+    }
+
+    public Grammar(String id, List<Question> questions) {
         this.id = id;
         this.type = EPracticeType.GRAMMAR;
         this.questions = questions;

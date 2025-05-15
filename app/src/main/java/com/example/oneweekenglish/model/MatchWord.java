@@ -8,7 +8,10 @@ public class MatchWord {
     private List<Word> words;
     //constructor
 
-    public MatchWord(String id,List<Word> words) {
+    public MatchWord() {
+    }
+
+    public MatchWord(String id, List<Word> words) {
         this.id = id;
         this.type = EPracticeType.MATCH_WORD;
         this.words = words;
