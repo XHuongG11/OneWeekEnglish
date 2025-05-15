@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_signin"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp"
+    android:alpha="0.9">
+
+    <!-- Logo và tên ứng dụng -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/logo"
+            android:contentDescription="App Logo" />
+
+        <!-- Tên ứng dụng "OneWeek" -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/baloo"
+            android:text="OneWeek"
+            android:textColor="#FFFFFF"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Tiêu đề "Sign In to OneWeek" -->
+
+    <!-- Form đăng nhập -->
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_background"
+        android:padding="30dp">
+
+        <!-- Trường nhập User Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="Sign Up to OneWeek"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/baloo"
+            android:text="Full Name"
+            android:textColor="#717377"
+            android:textSize="16sp" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full name"
+            android:fontFamily="@font/baloo"
+            android:textColorHint="#999898"
+            android:textColor="#090909"
+            android:background="@drawable/edittext_background"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/baloo"
+            android:text="User Name"
+            android:textColor="#717377"
+            android:textSize="16sp" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/baloo"
+            android:hint="User name"
+            android:textColorHint="#999898"
+            android:textColor="#090909"
+            android:background="@drawable/edittext_background"
+            android:layout_marginBottom="5dp"/>
+
+        <!-- Trường nhập Password -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:textSize="16sp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/baloo"
+            android:textColor="#717377"/>
+        <EditText
+            android:id="@+id/passwordField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="••••••••"
+            android:textColorHint="#999898"
+            android:textColor="#090909"
+            android:background="@drawable/edittext_background"
+            android:layout_marginBottom="5dp"
+            android:drawablePadding="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/baloo"
+            android:text="Confirm Pasword"
+            android:textColor="#717377"
+            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/confirmpasswordFieldpasswordField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="••••••••"
+            android:textColorHint="#999898"
+            android:textColor="#090909"
+            android:background="@drawable/edittext_background"
+            android:layout_marginBottom="10dp"
+            android:drawablePadding="8dp"/>
+
+        <!-- Nút "Sign In" -->
+        <ImageButton
+            android:id="@+id/signInButton"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btnsignup"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="Sign Up"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true" />
+
+        <!-- Liên kết "Don't have an account?" -->
+        <TextView
+            android:id="@+id/moveSignIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:clickable="true"
+            android:fontFamily="@font/baloo"
+            android:onClick="onNoAccountClicked"
+            android:padding="5dp"
+            android:text="You have an account"
+            android:textColor="#C28300"
+            android:textSize="16sp" />
+    </LinearLayout>
+</LinearLayout>
