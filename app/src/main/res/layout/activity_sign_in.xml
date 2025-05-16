@@ -64,13 +64,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/baloo"
-            android:text="User Name"
+            android:text="Email"
             android:textColor="#717377"
             android:textSize="16sp" />
         <EditText
+            android:id="@+id/editTextUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="User name"
+            android:hint="Email"
             android:fontFamily="@font/baloo"
             android:textColorHint="#999898"
             android:textColor="#090909"
@@ -87,7 +88,7 @@
             android:fontFamily="@font/baloo"
             android:textColor="#717377"/>
         <EditText
-            android:id="@+id/passwordField"
+            android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"

@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/wordImage" />
 
     <ImageButton
-        android:id="@+id/micButton"
+        android:id="@+id/buttonRecord"
         android:layout_width="61dp"
         android:layout_height="61dp"
         android:background="@android:color/transparent"

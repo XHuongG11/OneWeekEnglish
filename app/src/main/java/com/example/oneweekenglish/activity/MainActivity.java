@@ -1,7 +1,9 @@
 package com.example.oneweekenglish.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,6 +18,8 @@ import com.example.oneweekenglish.model.User;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,15 +30,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
-        UserDAO userDAO = new UserDAO();
-        User user = new User("22110156@student.hcmute.edu.vn", "Xuân Hương", "123456");
-        userDAO.create(user, isSuccess -> {
-            if (isSuccess) {
-                Toast.makeText(this, "Tạo user thành công!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Tạo user thất bại!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        TextView fullName = findViewById(R.id.textViewNameOfUser);
+        fullName.setText(getNameOfUser());
+    }
+    private String getNameOfUser(){
+        SharedPreferences prefs = getSharedPreferences("CurentUser", MODE_PRIVATE);
+        String fullName = prefs.getString("fullName", null);
+        return fullName != null ? fullName : "";
     }
 }
