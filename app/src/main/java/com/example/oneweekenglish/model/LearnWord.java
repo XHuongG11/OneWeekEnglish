@@ -8,7 +8,11 @@ public class LearnWord {
     private List<Word> words;
     //constructor
 
-    public LearnWord(String id,List<Word> words) {
+
+    public LearnWord() {
+    }
+
+    public LearnWord(String id, List<Word> words) {
         this.id = id;
         this.type = EPracticeType.LEARN_WORD;
         this.words = words;

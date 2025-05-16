@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <ImageButton
+        android:id="@+id/closeButton"
+        android:layout_width="36dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_close"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/numberLessonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/baloo2medium"
+        android:text="Lesson 1"
+        android:textColor="#707070"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/closeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/closeButton" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/balooregular"
+        android:text="Listen and repeat"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="8dp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/speakerButton"
+        app:layout_constraintStart_toEndOf="@+id/speakerButton"
+        app:layout_constraintTop_toTopOf="@+id/speakerButton" />
+
+    <ImageButton
+        android:id="@+id/speakerButton"
+        android:layout_width="40dp"
+        android:layout_height="44dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_speaker"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/closeButton" />
+
+    <ImageView
+        android:id="@+id/wordImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dog"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+    <TextView
+        android:id="@+id/wordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/superboys"
+        android:text="DOG"
+        android:textColor="@android:color/black"
+        android:textSize="36sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wordImage" />
+
+    <ImageButton
+        android:id="@+id/micButton"
+        android:layout_width="61dp"
+        android:layout_height="61dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_mic"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wordText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

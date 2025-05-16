@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    android:background="#FFF3CD"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/cautionIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="Biểu tượng cảnh báo"
+        android:src="@drawable/ic_caution"
+        app:layout_constraintBottom_toBottomOf="@+id/notBadText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/notBadText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not bad!"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_yellow"
+        android:fontFamily="@font/baloo2medium"
+        app:layout_constraintStart_toEndOf="@id/cautionIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp" />
+
+    <ImageView
+        android:id="@+id/shareIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="Biểu tượng cảnh báo"
+        android:src="@drawable/ic_share_yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/notBadText"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/reportIcon"
+        app:layout_constraintTop_toTopOf="@+id/notBadText" />
+
+    <ImageView
+        android:id="@+id/reportIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="Biểu tượng cảnh báo"
+        android:src="@drawable/ic_report_yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/notBadText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/notBadText" />
+
+    <TextView
+        android:id="@+id/tryAgainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Do you want to try again?"
+        android:textStyle="bold"
+        android:fontFamily="@font/baloo2medium"
+        android:textColor="@color/text_yellow"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notBadText" />
+
+    <ImageButton
+        android:id="@+id/tryAgainButton"
+        android:layout_width="185dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_yellow_background"
+        android:padding="12dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tryAgainText"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <TextView
+        android:id="@+id/txtButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TRY AGAIN"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/balooregular"
+        app:layout_constraintBottom_toBottomOf="@+id/tryAgainButton"
+        app:layout_constraintEnd_toEndOf="@+id/tryAgainButton"
+        app:layout_constraintStart_toStartOf="@+id/tryAgainButton"
+        app:layout_constraintTop_toTopOf="@+id/tryAgainButton" />
+    <ImageButton
+        android:id="@+id/nextButton"
+        android:layout_width="135dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_yellow_background"
+        android:padding="12dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tryAgainText"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <TextView
+        android:id="@+id/nextLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEXT"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/balooregular"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="@id/nextButton"
+        app:layout_constraintEnd_toEndOf="@id/nextButton"
+        app:layout_constraintTop_toTopOf="@id/nextButton"
+        app:layout_constraintBottom_toBottomOf="@id/nextButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

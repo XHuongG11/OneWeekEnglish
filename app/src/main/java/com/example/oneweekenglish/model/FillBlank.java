@@ -8,7 +8,10 @@ public class FillBlank {
     private List<Word> words;
     //constructor
 
-    public FillBlank(String id,List<Word> words) {
+    public FillBlank() {
+    }
+
+    public FillBlank(String id, List<Word> words) {
         this.id = id;
         this.type = EPracticeType.FILL_BLANK;
         this.words = words;

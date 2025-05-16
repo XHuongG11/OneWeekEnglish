@@ -1,18 +1,21 @@
 package com.example.oneweekenglish.model;
 
-public class LessionProgress {
+public class LessonProgress {
     private String id;
-    private Lession lession;
+    private Lesson lesson;
     private double percent;
     //constructor
 
-    public LessionProgress(String id, Lession lession, double percent) {
+    public LessonProgress() {
+    }
+
+    public LessonProgress(String id, Lesson lesson, double percent) {
         this.id = id;
-        this.lession = lession;
+        this.lesson = lesson;
         this.percent = percent;
     }
-    public LessionProgress(Lession lession, double percent) {
-        this.lession = lession;
+    public LessonProgress(Lesson lesson, double percent) {
+        this.lesson = lesson;
         this.percent = percent;
     }
 
@@ -22,8 +25,8 @@ public class LessionProgress {
         return id;
     }
 
-    public Lession getLession() {
-        return lession;
+    public Lesson getLesson() {
+        return lesson;
     }
 
     public double getPercent() {
@@ -36,8 +39,8 @@ public class LessionProgress {
         this.id = id;
     }
 
-    public void setLession(Lession lession) {
-        this.lession = lession;
+    public void setLesson(Lesson lesson) {
+        this.lesson = lesson;
     }
 
     public void setPercent(double percent) {
