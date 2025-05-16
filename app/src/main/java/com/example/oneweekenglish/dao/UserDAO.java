@@ -56,6 +56,27 @@ public class UserDAO {
                     listener.onGetByID(null);
                 });
     }
+    public void getByEmailAndPassword(String email,String password, OnGetByIdListener<User> listener)
+    {
+        db.collection("users")
+                .whereEqualTo("email", email)
+                .whereEqualTo("password",password)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if(!documentSnapshot.isEmpty()){
+                        DocumentSnapshot doc = documentSnapshot.getDocuments().get(0);
+                        User user = doc.toObject(User.class);
+                        listener.onGetByID(user);
+                    }
+                    else{
+                        listener.onGetByID(null);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firebase", "Error getting user by ID", e);
+                    listener.onGetByID(null);
+                });
+    }
 
     public void getAll(OnGetAllListener<User> listener) {
         db.collection("users")

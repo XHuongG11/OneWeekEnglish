@@ -67,6 +67,7 @@
             android:textColor="#717377"
             android:textSize="16sp" />
         <EditText
+            android:id="@+id/editTextFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Full name"
@@ -80,14 +81,15 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/baloo"
-            android:text="User Name"
+            android:text="Email"
             android:textColor="#717377"
             android:textSize="16sp" />
         <EditText
+            android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/baloo"
-            android:hint="User name"
+            android:hint="Email"
             android:textColorHint="#999898"
             android:textColor="#090909"
             android:background="@drawable/edittext_background"
@@ -103,7 +105,7 @@
             android:fontFamily="@font/baloo"
             android:textColor="#717377"/>
         <EditText
-            android:id="@+id/passwordField"
+            android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -113,29 +115,29 @@
             android:background="@drawable/edittext_background"
             android:layout_marginBottom="5dp"
             android:drawablePadding="8dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:fontFamily="@font/baloo"
-            android:text="Confirm Pasword"
-            android:textColor="#717377"
-            android:textSize="16sp" />
-        <EditText
-            android:id="@+id/confirmpasswordFieldpasswordField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="••••••••"
-            android:textColorHint="#999898"
-            android:textColor="#090909"
-            android:background="@drawable/edittext_background"
-            android:layout_marginBottom="10dp"
-            android:drawablePadding="8dp"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:fontFamily="@font/baloo"-->
+<!--            android:text="Confirm Pasword"-->
+<!--            android:textColor="#717377"-->
+<!--            android:textSize="16sp" />-->
+<!--        <EditText-->
+<!--            android:id="@+id/confirmpasswordFieldpasswordField"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:inputType="textPassword"-->
+<!--            android:hint="••••••••"-->
+<!--            android:textColorHint="#999898"-->
+<!--            android:textColor="#090909"-->
+<!--            android:background="@drawable/edittext_background"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:drawablePadding="8dp"/>-->
 
         <!-- Nút "Sign In" -->
         <ImageButton
-            android:id="@+id/signInButton"
+            android:id="@+id/buttonSignUp"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:src="@drawable/btnsignup"
