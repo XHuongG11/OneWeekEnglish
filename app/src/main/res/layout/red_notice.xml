@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    android:background="#FFF2F2"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/wrongIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_wrong"
+        app:layout_constraintBottom_toBottomOf="@+id/wrongText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/wrongText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not bad!"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_red"
+        android:fontFamily="@font/baloo2medium"
+        app:layout_constraintStart_toEndOf="@id/wrongIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp" />
+
+    <ImageView
+        android:id="@+id/shareIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_share_red"
+        app:layout_constraintBottom_toBottomOf="@+id/wrongText"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/reportIcon"
+        app:layout_constraintTop_toTopOf="@+id/wrongText" />
+
+    <ImageView
+        android:id="@+id/reportIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="Biểu tượng cảnh báo"
+        android:src="@drawable/ic_report_red"
+        app:layout_constraintBottom_toBottomOf="@+id/wrongText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/wrongText" />
+
+    <TextView
+        android:id="@+id/tryAgainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="The answer is “I like dog”."
+        android:textStyle="bold"
+        android:fontFamily="@font/baloo2medium"
+        android:textColor="@color/text_red"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wrongText" />
+
+    <ImageButton
+        android:id="@+id/tryAgainButton"
+        android:layout_width="259dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_red_background"
+        android:padding="12dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tryAgainText"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <TextView
+        android:id="@+id/txtButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CONTINUE"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/balooregular"
+        app:layout_constraintBottom_toBottomOf="@+id/tryAgainButton"
+        app:layout_constraintEnd_toEndOf="@+id/tryAgainButton"
+        app:layout_constraintStart_toStartOf="@+id/tryAgainButton"
+        app:layout_constraintTop_toTopOf="@+id/tryAgainButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
