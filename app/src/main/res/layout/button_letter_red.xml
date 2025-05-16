@@ -10,7 +10,7 @@
         android:id="@+id/letterButton"
         android:layout_width="48dp"
         android:layout_height="52dp"
-        android:background="@drawable/button_letter_grey"
+        android:background="@drawable/button_letter_red"
         android:padding="12dp"
         android:scaleType="fitXY"
         android:clickable="false"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/balooregular"
         android:text="A"
-        android:textColor="#EF3349"
+        android:textColor="#FFFFFF"
         android:textSize="40sp"
         android:clickable="false"
         android:focusable="false"
@@ -34,6 +34,5 @@
         app:layout_constraintEnd_toEndOf="@+id/letterButton"
         app:layout_constraintStart_toStartOf="@+id/letterButton"
         app:layout_constraintTop_toTopOf="@+id/letterButton" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
