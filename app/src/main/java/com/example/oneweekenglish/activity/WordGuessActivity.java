@@ -55,7 +55,7 @@ public class WordGuessActivity extends AppCompatActivity {
         // Tạo gạch dưới động
         LinearLayout underlineContainer = findViewById(R.id.underlineContainer);
         for (int i = 0; i < wordToGuess.length(); i++) {
-            View underlineView = LayoutInflater.from(this).inflate(R.layout.underline_view, underlineContainer, false);
+            View underlineView = LayoutInflater.from(this).inflate(R.layout.underline_view_small, underlineContainer, false);
             TextView letterText = underlineView.findViewById(R.id.letterText);
             letterText.setOnClickListener(v -> {
                 if (isWordCorrect) {
