@@ -1,5 +1,6 @@
 package com.example.oneweekenglish.activity;
 
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -205,11 +206,34 @@ public class WordGuessActivity extends AppCompatActivity
                     textView.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
                 }
                 showGreenNoticeFragment();
+                SoundPool soundPool = new SoundPool.Builder()
+                        .setMaxStreams(5)
+                        .build();
+
+                int soundId = soundPool.load(getApplicationContext(), R.raw.win_game_guess_word, 1);
+
+                soundPool.setOnLoadCompleteListener((sp, id, status) -> {
+                    if (status == 0) {
+                        soundPool.play(soundId, 1, 1, 0, 0, 1);
+                    }
+                });
+
             } else {
                 for (TextView textView : underlineTextViews) {
                     textView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                 }
                 showRedNoticeFragment();
+                SoundPool soundPool = new SoundPool.Builder()
+                        .setMaxStreams(5)
+                        .build();
+
+                int soundId = soundPool.load(getApplicationContext(), R.raw.lose_game_guess_word, 1);
+
+                soundPool.setOnLoadCompleteListener((sp, id, status) -> {
+                    if (status == 0) {
+                        soundPool.play(soundId, 1, 1, 0, 0, 1);
+                    }
+                });
             }
         });
     }
@@ -220,6 +244,19 @@ public class WordGuessActivity extends AppCompatActivity
         }
         if (!selectedLetter.isSelected()) {
             if (currentUnderlineIndex < underlineTextViews.size()) {
+                //Phat am thanh
+                SoundPool soundPool = new SoundPool.Builder()
+                        .setMaxStreams(5)
+                        .build();
+
+                int soundId = soundPool.load(getApplicationContext(), R.raw.click_button_letter, 1);
+                soundPool.setOnLoadCompleteListener((sp, id, status) -> {
+                    if (status == 0) {
+                        soundPool.play(soundId, 1, 1, 0, 0, 1);
+                    }
+                });
+
+
                 underlineTextViews.get(currentUnderlineIndex).setText(selectedLetter.getLetter());
                 selectedLetter.setSelected(true);
                 letterAdapter.notifyDataSetChanged();
