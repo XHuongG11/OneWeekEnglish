@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="#DFFEBF"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/correctIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_correct"
+        app:layout_constraintBottom_toBottomOf="@+id/amazingText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/amazingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Amazing!"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_green"
+        android:fontFamily="@font/baloo2medium"
+        app:layout_constraintStart_toEndOf="@id/correctIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp" />
+
+    <ImageView
+        android:id="@+id/shareIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+
+        android:src="@drawable/ic_share_green"
+        app:layout_constraintBottom_toBottomOf="@+id/amazingText"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/reportIcon"
+        app:layout_constraintTop_toTopOf="@+id/amazingText" />
+
+    <ImageView
+        android:id="@+id/reportIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+
+        android:src="@drawable/ic_report_green"
+        app:layout_constraintBottom_toBottomOf="@+id/amazingText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/amazingText" />
+
+
+    <ImageButton
+        android:id="@+id/continueButton"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:background="@drawable/button_green_background"
+        android:padding="12dp"
+        android:scaleType="fitXY"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amazingText"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <TextView
+        android:id="@+id/txtButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CONTINUE"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/balooregular"
+        app:layout_constraintBottom_toBottomOf="@+id/continueButton"
+        app:layout_constraintEnd_toEndOf="@+id/continueButton"
+        app:layout_constraintStart_toStartOf="@+id/continueButton"
+        app:layout_constraintTop_toTopOf="@+id/continueButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
