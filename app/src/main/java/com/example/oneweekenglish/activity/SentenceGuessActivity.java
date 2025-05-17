@@ -1,11 +1,16 @@
 package com.example.oneweekenglish.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -13,31 +18,53 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.oneweekenglish.util.SpacesItemDecoration;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.flexbox.FlexboxLayoutManager;
+
+
+import com.bumptech.glide.Glide;
 import com.example.oneweekenglish.R;
 import com.example.oneweekenglish.adapter.WordAdapter;
 import com.example.oneweekenglish.fragment.GreenNoticeFragment;
 import com.example.oneweekenglish.fragment.RedNoticeFragment;
-import com.example.oneweekenglish.model.Word;
+import com.example.oneweekenglish.model.Question;
+import com.example.oneweekenglish.util.Sound;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class SentenceGuessActivity extends AppCompatActivity
         implements GreenNoticeFragment.OnContinueClickListener,
         RedNoticeFragment.OnTryAgainListener {
 
     private List<TextView> underlineTextViews = new ArrayList<>();
-    private List<Word> wordItems;
     private WordAdapter wordAdapter;
-    private String sentenceToGuess;
     private int currentUnderlineIndex = 0;
+    private ImageView wordImage;
     private boolean isSentenceCorrect = false;
     private static final String TAG = "SentenceGuessActivity";
+    private List<Question> questions;
+    private List<String> answers;
+    private Question currentQuestion;
+    private int currentIndex;
+    private Sound sound;
+    private RecyclerView wordRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,32 +73,45 @@ public class SentenceGuessActivity extends AppCompatActivity
         setContentView(R.layout.activity_sentence_guess);
         Log.d(TAG, "onCreate called");
 
-        // Khởi tạo dữ liệu
-        wordItems = new ArrayList<>();
-        wordItems.add(new Word("1", "I", Arrays.asList("tôi"), Arrays.asList("đại từ nhân xưng"), "/aɪ/", "", "pronoun"));
-        wordItems.add(new Word("2", "like", Arrays.asList("mèo"), Arrays.asList("bày tỏ tình cảm"), "/lʌv/", "", "verb"));
-        wordItems.add(new Word("3", "dog", Arrays.asList("thích"), Arrays.asList("đại từ nhân xưng"), "/juː/", "", "pronoun"));
-        wordItems.add(new Word("4", "He", Arrays.asList("anh ấy"), Arrays.asList("cảm xúc tiêu cực"), "/heɪt/", "", "verb"));
-        wordItems.add(new Word("5", "cat", Arrays.asList("chó"), Arrays.asList("đại từ nhân xưng"), "/wiː/", "", "pronoun"));
-        wordItems.add(new Word("6", "pig", Arrays.asList("heo"), Arrays.asList("di chuyển"), "/ɡoʊ/", "", "verb"));
-        wordItems.add(new Word("7", "hate", Arrays.asList("ghét"), Arrays.asList("giới từ chỉ hướng"), "/tuː/", "", "preposition"));
+        sound = new Sound(getApplicationContext());
+        wordImage = findViewById(R.id.wordImage);
 
-        // Tạo câu cần đoán
-        List<Word> sentenceWords = Arrays.asList(
-                wordItems.get(0), // I
-                wordItems.get(1), // LOVE
-                wordItems.get(2)  // YOU
-        );
-        sentenceToGuess = String.join(" ", Arrays.asList(
-                sentenceWords.get(0).getContent(),
-                sentenceWords.get(1).getContent(),
-                sentenceWords.get(2).getContent()
-        ));
-        Log.d(TAG, "Sentence to guess: " + sentenceToGuess);
+        wordRecyclerView = findViewById(R.id.letterRecyclerView);
+        // Thêm khoảng cách giữa các item
+        int spacingInPixels = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics());
+        wordRecyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+
+        // Khởi tạo dữ liệu
+        questions = new ArrayList<>();
+        questions.add(new Question(UUID.randomUUID().toString(),
+                "https://res.cloudinary.com/dvjxenags/image/upload/v1747497051/monkey_love_banana_vqvpzv.gif",
+                "Monkeys like bananas"));
+        questions.add(new Question(UUID.randomUUID().toString(),
+                "https://res.cloudinary.com/dvjxenags/image/upload/v1747496464/the_bird_can_fly_rlt6fs.gif",
+                "The bird can fly"));
+        questions.add(new Question(UUID.randomUUID().toString(),
+                "https://res.cloudinary.com/dvjxenags/image/upload/v1747487549/i_like_dog_pk8xja.png", "I like dog"));
+        questions.add(new Question(UUID.randomUUID().toString(),
+                "https://res.cloudinary.com/dvjxenags/image/upload/v1747498090/lion_is_strong_qtrhsd.jpg",
+                "A lion is strong"));
+
+        currentIndex = 0;
+        currentQuestion = questions.get(currentIndex);
+        loadQuestion();
+    }
+
+    private void loadQuestion(){
+        // tạo dữ liệu câu hỏi
+        createQuestion(currentQuestion);
+        // gán hình ảnh
+        Glide.with(this)
+                .load(currentQuestion.getUrlImage())
+                .into(wordImage);
 
         // Tạo gạch dưới động
         LinearLayout underlineContainer = findViewById(R.id.underlineContainer);
-        String[] wordsInSentence = sentenceToGuess.split(" ");
+        String[] wordsInSentence = currentQuestion.getContent().split(" ");
         for (int i = 0; i < wordsInSentence.length; i++) {
             View underlineView = LayoutInflater.from(this).inflate(R.layout.underline_view, underlineContainer, false);
             TextView wordText = underlineView.findViewById(R.id.letterText);
@@ -81,8 +121,8 @@ public class SentenceGuessActivity extends AppCompatActivity
                 String word = textView.getText().toString();
                 if (word.isEmpty()) return;
                 textView.setText("");
-                for (Word item : wordItems) {
-                    if (item.getContent().equals(word) && wordAdapter.isSelected(item)) {
+                for (String item : answers) {
+                    if (item.equals(word) && wordAdapter.isSelected(item)) {
                         wordAdapter.setSelected(item, false);
                         break;
                     }
@@ -94,22 +134,20 @@ public class SentenceGuessActivity extends AppCompatActivity
             underlineContainer.addView(underlineView);
         }
 
-        // Trộn danh sách từ
-        Collections.shuffle(wordItems);
+        // Thiết lập FlexboxLayoutManager answers
+        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
+        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager.setFlexWrap(FlexWrap.WRAP);
+        wordRecyclerView.setLayoutManager(flexboxLayoutManager);
 
-        // Thiết lập GridView
-        GridView wordGridView = findViewById(R.id.letterGridView);
-        wordAdapter = new WordAdapter(wordItems, position -> {
-            Word selectedWord = wordItems.get(position);
-            Log.d(TAG, "Fallback: Word button clicked: " + selectedWord.getContent());
+        // Thiết lập adapter
+        wordAdapter = new WordAdapter(answers, position -> {
+            String selectedWord = answers.get(position);
+            Log.d(TAG, "Fallback: Word button clicked: " + selectedWord);
             handleWordClick(selectedWord);
         });
-        wordGridView.setAdapter(wordAdapter);
-        wordGridView.setOnItemClickListener((parent, view, position, id) -> {
-            Word selectedWord = wordItems.get(position);
-            Log.d(TAG, "GridView: Word button clicked: " + selectedWord.getContent());
-            handleWordClick(selectedWord);
-        });
+        wordRecyclerView.setAdapter(wordAdapter);
+
 
         // Nút đóng
         ImageButton closeButton = findViewById(R.id.closeButton);
@@ -121,7 +159,7 @@ public class SentenceGuessActivity extends AppCompatActivity
         // Nút loa
         ImageButton speakerButton = findViewById(R.id.speakerButton);
         speakerButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Phát âm thanh: " + sentenceToGuess, Toast.LENGTH_SHORT).show();
+            sound.readText(currentQuestion.getContent());
             Log.d(TAG, "Speaker button clicked");
         });
 
@@ -134,34 +172,69 @@ public class SentenceGuessActivity extends AppCompatActivity
             }
             String finalGuessedSentence = guessedSentence.toString().trim();
             Log.d(TAG, "Guessed sentence: " + finalGuessedSentence);
-            if (finalGuessedSentence.equals(sentenceToGuess)) {
+            if (finalGuessedSentence.equals(currentQuestion.getContent())) {
                 isSentenceCorrect = true;
                 for (TextView textView : underlineTextViews) {
                     textView.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
                 }
                 showGreenNoticeFragment();
+
+                // phát âm thanh đúng
+                SoundPool soundPool = new SoundPool.Builder()
+                        .setMaxStreams(5)
+                        .build();
+                int soundId = soundPool.load(getApplicationContext(), R.raw.win_game_guess_word, 1);
+
+                soundPool.setOnLoadCompleteListener((sp, id, status) -> {
+                    if (status == 0) {
+                        soundPool.play(soundId, 1, 1, 0, 0, 1);
+                    }
+                });
             } else {
                 for (TextView textView : underlineTextViews) {
                     textView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                 }
                 showRedNoticeFragment();
+
+                // phát âm thanh sai
+                SoundPool soundPool = new SoundPool.Builder()
+                        .setMaxStreams(5)
+                        .build();
+
+                int soundId = soundPool.load(getApplicationContext(), R.raw.lose_game_guess_word, 1);
+
+                soundPool.setOnLoadCompleteListener((sp, id, status) -> {
+                    if (status == 0) {
+                        soundPool.play(soundId, 1, 1, 0, 0, 1);
+                    }
+                });
             }
         });
     }
-
-    private void handleWordClick(Word selectedWord) {
+    private void handleWordClick(String selectedWord) {
         if (isSentenceCorrect) return;
         if (!wordAdapter.isSelected(selectedWord)) {
+            //Phat am thanh
+            SoundPool soundPool = new SoundPool.Builder()
+                    .setMaxStreams(5)
+                    .build();
+
+            int soundId = soundPool.load(getApplicationContext(), R.raw.click_button_letter, 1);
+            soundPool.setOnLoadCompleteListener((sp, id, status) -> {
+                if (status == 0) {
+                    soundPool.play(soundId, 1, 1, 0, 0, 1);
+                }
+            });
             if (currentUnderlineIndex < underlineTextViews.size()) {
-                underlineTextViews.get(currentUnderlineIndex).setText(selectedWord.getContent());
+                underlineTextViews.get(currentUnderlineIndex).setText(selectedWord);
                 wordAdapter.setSelected(selectedWord, true);
                 currentUnderlineIndex++;
-                Log.d(TAG, "Word selected: " + selectedWord.getContent());
+                Log.d(TAG, "Word selected: " + selectedWord);
             } else {
                 Toast.makeText(this, "Đã đủ từ!", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Log.d(TAG, "Word already selected: " + selectedWord.getContent());
+            Log.d(TAG, "Word already selected: " + selectedWord);
         }
     }
 
@@ -180,22 +253,39 @@ public class SentenceGuessActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         RedNoticeFragment fragment = new RedNoticeFragment();
-        fragment.setAnswer(sentenceToGuess); // Truyền câu trả lời đúng
+        fragment.setAnswer(currentQuestion.getContent()); // Truyền câu trả lời đúng
         transaction.replace(R.id.fragmentContainer, fragment);
         transaction.addToBackStack(null);
         findViewById(R.id.fragmentContainer).setVisibility(View.VISIBLE);
         transaction.commit();
-        Log.d(TAG, "RedNoticeFragment displayed with answer: " + sentenceToGuess);
+        Log.d(TAG, "RedNoticeFragment displayed with answer: " + currentQuestion.getContent());
     }
 
     @Override
     public void onContinueClicked() {
-        findViewById(R.id.fragmentContainer).setVisibility(View.GONE);
-        getSupportFragmentManager().popBackStack();
-        Intent intent = new Intent(this, WordGuessActivity.class); // Thay NextActivity bằng activity thật
-        startActivity(intent);
-        finish();
-        Log.d(TAG, "Continue button clicked, navigating to NextActivity");
+        // set lại giá trị cho phép chọn
+        isSentenceCorrect = false;
+        currentUnderlineIndex = 0;
+
+        // Xóa dữ liệu cũ trong underline
+        LinearLayout underlineContainer = findViewById(R.id.underlineContainer);
+        underlineContainer.removeAllViews();
+        underlineTextViews.clear();
+
+        // load tiếp câu tiếp theo
+        currentIndex++;
+        currentQuestion = questions.get(currentIndex);
+        loadQuestion();
+
+        // Ẩn fragment GreenNotice
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
+        if (fragment != null) {
+            fm.beginTransaction()
+                    .remove(fragment)
+                    .commit();
+            findViewById(R.id.fragmentContainer).setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -211,12 +301,11 @@ public class SentenceGuessActivity extends AppCompatActivity
             textView.setText("");
             textView.setTextColor(getResources().getColor(android.R.color.black)); // Reset màu
         }
-        for (Word word : wordItems) {
+        for (String word : answers) {
             wordAdapter.setSelected(word, false);
         }
         currentUnderlineIndex = 0;
         isSentenceCorrect = false;
-        Collections.shuffle(wordItems);
         wordAdapter.notifyDataSetChanged();
         Log.d(TAG, "Game reset completed");
     }
@@ -224,9 +313,54 @@ public class SentenceGuessActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        wordItems.clear();
+        answers.clear();
         underlineTextViews.clear();
         wordAdapter.notifyDataSetChanged();
         Log.d(TAG, "onDestroy called, resources cleared");
     }
+    private String getRandomWordFromAssets(Context context) {
+        try {
+            AssetManager assetManager = context.getAssets();
+            InputStream is = assetManager.open("english_words_100.txt");
+            Log.d("DEBUG", "File opened successfully");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            List<String> words = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                words.add(line.trim());
+                Log.d("DEBUG", "Read word: " + line.trim());
+            }
+
+            if (words.isEmpty()) {
+                Log.d("DEBUG", "No words loaded from file");
+                return null;
+            }
+
+            Random random = new Random();
+            String word = words.get(random.nextInt(words.size()));
+            Log.d("DEBUG", "Random word chosen: " + word);
+            return word;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("ERROR", "Error reading words from assets: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private void createQuestion(Question question){
+        answers = new ArrayList<>(Arrays.asList(question.getContent().split(" ")));
+        for(int i = 0; i < 3; i++){
+            String randomWord = getRandomWordFromAssets(this);
+            answers.add(randomWord);
+        }
+        // Xáo trộn
+        Collections.shuffle(answers);
+
+        for (String word : answers) {
+            Log.d("TAG", word != null ? word : "message is null");
+        }
+    }
+
 }

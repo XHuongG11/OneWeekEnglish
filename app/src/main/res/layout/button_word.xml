@@ -3,37 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:gravity="center">
 
     <ImageButton
         android:id="@+id/letterButton"
-        android:layout_width="68dp"
-        android:layout_height="56dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
         android:background="@drawable/button_letter_grey"
-        android:padding="12dp"
-        android:scaleType="fitXY"
         android:clickable="false"
         android:focusable="false"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/letterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
         android:fontFamily="@font/balooregular"
-        android:text="A"
+        android:gravity="center"
+        android:text="Monkeyyyyy"
         android:textColor="#EF3349"
         android:textSize="30sp"
-        android:clickable="false"
-        android:focusable="false"
-        app:layout_constraintBottom_toBottomOf="@+id/letterButton"
-        app:layout_constraintEnd_toEndOf="@+id/letterButton"
-        app:layout_constraintStart_toStartOf="@+id/letterButton"
-        app:layout_constraintTop_toTopOf="@+id/letterButton" />
-
+        app:layout_constraintBottom_toBottomOf="@id/letterButton"
+        app:layout_constraintEnd_toEndOf="@id/letterButton"
+        app:layout_constraintStart_toStartOf="@id/letterButton"
+        app:layout_constraintTop_toTopOf="@id/letterButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

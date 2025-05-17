@@ -55,7 +55,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.8.9")
-
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
