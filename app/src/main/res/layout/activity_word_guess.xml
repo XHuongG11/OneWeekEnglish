@@ -82,7 +82,7 @@
         <GridView
             android:id="@+id/letterGridView"
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
