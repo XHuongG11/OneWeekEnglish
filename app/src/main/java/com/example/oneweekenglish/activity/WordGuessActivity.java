@@ -366,7 +366,5 @@ public class WordGuessActivity extends AppCompatActivity
 
         // Reset cờ từ đúng
         isWordCorrect = false;
-
-
     }
 }
