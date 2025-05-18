@@ -226,9 +226,7 @@ public class WordGuessActivity extends AppCompatActivity
                 SoundPool soundPool = new SoundPool.Builder()
                         .setMaxStreams(5)
                         .build();
-
                 int soundId = soundPool.load(getApplicationContext(), R.raw.lose_game_guess_word, 1);
-
                 soundPool.setOnLoadCompleteListener((sp, id, status) -> {
                     if (status == 0) {
                         soundPool.play(soundId, 1, 1, 0, 0, 1);
@@ -255,8 +253,6 @@ public class WordGuessActivity extends AppCompatActivity
                         soundPool.play(soundId, 1, 1, 0, 0, 1);
                     }
                 });
-
-
                 underlineTextViews.get(currentUnderlineIndex).setText(selectedLetter.getLetter());
                 selectedLetter.setSelected(true);
                 letterAdapter.notifyDataSetChanged();
