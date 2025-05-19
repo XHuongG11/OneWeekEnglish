@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:text="cat"
             android:fontFamily="@font/superboys"
-            android:textSize="28sp"
+            android:textSize="20sp"
             android:textColor="@color/black">
         </TextView>
     </LinearLayout>
