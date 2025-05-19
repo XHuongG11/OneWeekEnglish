@@ -16,6 +16,7 @@
         android:background="@android:color/transparent">
 
         <ImageView
+            android:id="@+id/imageViewCardImage"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:src="@drawable/image_card"
