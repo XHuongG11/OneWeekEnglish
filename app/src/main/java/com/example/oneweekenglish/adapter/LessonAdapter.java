@@ -1,6 +1,8 @@
 package com.example.oneweekenglish.adapter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.SoundPool;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +30,14 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
 
     private List<Lesson> lessonList;
     private int visiblePosition = 0;
+    private Context context;
 
     public LessonAdapter(List<Lesson> lessonList) {
         this.lessonList = lessonList;
+    }
+    public LessonAdapter(List<Lesson> lessonList, Context context) {
+        this.lessonList = lessonList;
+        this.context = context;
     }
 
     @NonNull
@@ -64,6 +71,16 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
 
         // Set click listener for start button
         holder.startButton.setOnClickListener(v -> {
+            SoundPool soundPool = new SoundPool.Builder()
+                    .setMaxStreams(5)
+                    .build();
+
+            int soundId = soundPool.load(context, R.raw.click_button_letter, 1);
+            soundPool.setOnLoadCompleteListener((sp, id, status) -> {
+                if (status == 0) {
+                    soundPool.play(soundId, 1, 1, 0, 0, 1);
+                }
+            });
             int currentPosition = holder.getAdapterPosition();
             if (currentPosition == RecyclerView.NO_POSITION) return;
 

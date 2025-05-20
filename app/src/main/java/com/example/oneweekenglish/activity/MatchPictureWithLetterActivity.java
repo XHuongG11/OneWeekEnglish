@@ -1,6 +1,8 @@
 package com.example.oneweekenglish.activity;
 import android.content.Intent;
+import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.oneweekenglish.R;
 import com.example.oneweekenglish.adapter.CardAdapter;
 import com.example.oneweekenglish.model.Word;
+import com.example.oneweekenglish.util.MusicService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,51 +26,11 @@ public class MatchPictureWithLetterActivity extends AppCompatActivity {
 
         public static List<Word> getWordList() {
             return Arrays.asList(
-                    new Word(
-                            "1",
-                            "ability",
-                            Arrays.asList("khả năng", "năng lực"),
-                            Arrays.asList("Possession of the means or skill to do something", "Natural talent or acquired skill"),
-                            "əˈbɪl.ə.ti",
-                            "https://images.unsplash.com/photo-1506362802973-bd1717de901c?auto=format&fit=crop&w=800&q=60",
-                            "noun"
-                    ),
-                    new Word(
-                            "2",
-                            "accident",
-                            Arrays.asList("tai nạn", "biến cố"),
-                            Arrays.asList("An unfortunate incident that happens unexpectedly", "Something that occurs by chance"),
-                            "ˈæk.sɪ.dənt",
-                            "https://images.unsplash.com/photo-1598899134739-24c46f58c5cf?auto=format&fit=crop&w=800&q=60",
-                            "noun"
-                    ),
-                    new Word(
-                            "3",
-                            "beautiful",
-                            Arrays.asList("xinh đẹp", "tuyệt vời"),
-                            Arrays.asList("Pleasing the senses or mind aesthetically", "Of a very high standard"),
-                            "ˈbjuː.tɪ.fəl",
-                            "https://images.unsplash.com/photo-1504198266285-1653e5c6e33b?auto=format&fit=crop&w=800&q=60",
-                            "adjective"
-                    ),
-                    new Word(
-                            "4",
-                            "create",
-                            Arrays.asList("tạo ra", "sáng tạo"),
-                            Arrays.asList("Bring something into existence", "Cause something to happen as a result of one’s actions"),
-                            "kriˈeɪt",
-                            "https://images.unsplash.com/photo-1581090700227-1e8c03abfd3c?auto=format&fit=crop&w=800&q=60",
-                            "verb"
-                    ),
-                    new Word(
-                            "5",
-                            "quickly",
-                            Arrays.asList("nhanh chóng", "ngay lập tức"),
-                            Arrays.asList("At a fast speed", "Without delay"),
-                            "ˈkwɪk.li",
-                            "https://images.unsplash.com/photo-1520880867055-1e30d1cb001c?auto=format&fit=crop&w=800&q=60",
-                            "adverb"
-                    )
+                    new Word("dog", Arrays.asList("chó"), Arrays.asList("a domesticated carnivorous mammal"), "/dɒɡ/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747663322/dog_t7wtjy.gif", "noun"),
+                    new Word("cat", Arrays.asList("mèo"), Arrays.asList("a small domesticated carnivorous mammal with soft fur"), "/kæt/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747663323/cat_uylk2d.gif", "noun"),
+                    new Word("rabbit", Arrays.asList("thỏ"), Arrays.asList("a small mammal with long ears, soft fur, and a short tail"), "/\u02c8r\u00e6b.\u026at/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747663327/bunny_fgvweu.png", "noun"),
+                    new Word("bear", Arrays.asList("gấu"), Arrays.asList("a large heavy mammal with thick fur and a short tail"), "/be\u0259r/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747663327/bear_dlcsuf.gif", "noun"),
+                    new Word("tiger", Arrays.asList("hổ"), Arrays.asList("a large carnivorous feline mammal with a yellow-brown coat striped with black"), "/\u02c8ta\u026a.\u0261\u0259r/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747663322/tiger_abe5bo.gif", "noun")
             );
         }
         private CardAdapter adapter;
@@ -86,7 +49,8 @@ public class MatchPictureWithLetterActivity extends AppCompatActivity {
 
         //đóng lại
         closeButton.setOnClickListener(v -> {
-            //
+            Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+            startActivity(intent);
         });
         //nút gợi ý
         hintButton.setOnClickListener(v -> {
@@ -109,23 +73,43 @@ public class MatchPictureWithLetterActivity extends AppCompatActivity {
 
             @Override
             public void onCardClick(int position, Word word, int viewType) {
+                MusicService.clickButtonSound(getApplicationContext());
+                adapter.setSelectedPosition(position);
+
                 if (firstSelected == null) {
-                    // Lần chọn đầu tiên
                     firstSelected = word;
                     firstPosition = position;
                 } else {
-                    if (firstSelected.getId().equals(word.getId()) && position != firstPosition) {
-                        // Đúng
+                    if (firstSelected.getContent().equals(word.getContent()) && position != firstPosition) {
                         Toast.makeText(getApplicationContext(), "Đúng rồi!", Toast.LENGTH_SHORT).show();
+                        adapter.setMatched(firstPosition, position);  // Ẩn 2 card đúng
                     } else {
-                        // Sai
+                        MusicService.loseSound(getApplicationContext());
                         Toast.makeText(getApplicationContext(), "Sai rồi!", Toast.LENGTH_SHORT).show();
+
+                        // Delay để reset selectedPosition và cập nhật lại viền
+                        new Handler().postDelayed(() -> {
+                            adapter.setSelectedPosition(-1);
+                        }, 200); // delay 0.5 giây
                     }
-                    // Reset để chọn lại
                     firstSelected = null;
                     firstPosition = -1;
                 }
+
+                if (adapter.getMatchedCount() == getWordList().size() * 2) {
+                    Toast.makeText(getApplicationContext(), "Chúc mừng! Bạn đã hoàn thành!", Toast.LENGTH_LONG).show();
+                    SoundPool soundPool = new SoundPool.Builder()
+                            .setMaxStreams(5)
+                            .build();
+                    int soundId = soundPool.load(getApplicationContext(), R.raw.win_game_guess_word, 1);
+                    soundPool.setOnLoadCompleteListener((sp, id, status) -> {
+                        if (status == 0) {
+                            soundPool.play(soundId, 1, 1, 0, 0, 1);
+                        }
+                    });
+                }
             }
+
         });
 
     }

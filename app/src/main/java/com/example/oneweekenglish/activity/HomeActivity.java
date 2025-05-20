@@ -1,5 +1,6 @@
 package com.example.oneweekenglish.activity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -30,12 +31,17 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView lessonRecyclerView;
     private LessonAdapter lessonAdapter;
     private List<Lesson> lessonList;
-
+    private MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+
+        // Khởi tạo MediaPlayer
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_meditation);
+        mediaPlayer.setLooping(true); // Nhạc lặp lại
+        mediaPlayer.start();
 
         // Initialize RecyclerView
         lessonRecyclerView = findViewById(R.id.lessonRecyclerView);
@@ -45,12 +51,37 @@ public class HomeActivity extends AppCompatActivity {
         lessonList = getLessonData();
 
         // Set up adapter
-        lessonAdapter = new LessonAdapter(lessonList);
+        lessonAdapter = new LessonAdapter(lessonList,getApplicationContext());
         lessonRecyclerView.setAdapter(lessonAdapter);
 
 //        createDatabase();
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Dừng nhạc khi Activity bị tạm dừng
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Phát lại nhạc nếu cần khi Activity quay lại
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Giải phóng MediaPlayer khi thoát Activity
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
     private List<Lesson> getLessonData() {
         List<Lesson> lessons = new ArrayList<>();
         // Hardcoded sample data (replace with database query)
