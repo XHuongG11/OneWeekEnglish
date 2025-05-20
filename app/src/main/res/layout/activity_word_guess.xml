@@ -61,10 +61,11 @@
             android:id="@+id/wordImage"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:layout_marginTop="48dp"
+            android:background="#FAFAFA"
             android:scaleType="fitCenter"
             android:src="@drawable/dog"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="48dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleText" />
 

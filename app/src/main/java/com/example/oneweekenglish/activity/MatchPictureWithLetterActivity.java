@@ -1,4 +1,5 @@
 package com.example.oneweekenglish.activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +71,7 @@ public class MatchPictureWithLetterActivity extends AppCompatActivity {
             );
         }
         private CardAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,7 @@ public class MatchPictureWithLetterActivity extends AppCompatActivity {
 
         ImageButton closeButton = findViewById(R.id.closeButton);
         ImageButton hintButton = findViewById(R.id.hintButton);
+
         //đóng lại
         closeButton.setOnClickListener(v -> {
             //
@@ -92,7 +95,8 @@ public class MatchPictureWithLetterActivity extends AppCompatActivity {
         //nút tiếp tục, code chỉ hiện khi đã match được hết nha
         ImageButton nextButton = findViewById(R.id.nextButton);
         nextButton.setOnClickListener(v -> {
-            //
+            Intent intent = new Intent(v.getContext(), WordGuessActivity.class);
+            v.getContext().startActivity(intent);
         });
 
         //setup adapter

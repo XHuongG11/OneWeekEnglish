@@ -1,6 +1,7 @@
 package com.example.oneweekenglish.adapter;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.oneweekenglish.R;
 import com.example.oneweekenglish.activity.HomeActivity;
+import com.example.oneweekenglish.activity.MatchPictureWithLetterActivity;
+import com.example.oneweekenglish.dao.LessonDAO;
+import com.example.oneweekenglish.dao.OnGetByIdListener;
+import com.example.oneweekenglish.model.LearnWord;
 import com.example.oneweekenglish.model.Lesson;
+import com.example.oneweekenglish.util.GlobalVariable;
 
 import java.util.List;
 
@@ -60,9 +68,28 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
             if (currentPosition == RecyclerView.NO_POSITION) return;
 
             Lesson lessonAtPosition = lessonList.get(currentPosition);
-            Intent intent = new Intent(v.getContext(), HomeActivity.class);
-            intent.putExtra("LESSON_ID", lessonAtPosition.getId());
-            v.getContext().startActivity(intent);
+
+            // save current lesson
+            LessonDAO lessonDAO = new LessonDAO();
+            lessonDAO.getByID(lessonAtPosition.getId(), new OnGetByIdListener<Lesson>() {
+                @Override
+                public void onGetByID(Lesson findLesson) {
+                    if (lesson != null) {
+                        Log.d("DEBUG", findLesson.getId());
+                        GlobalVariable.currentLesson = findLesson;
+                        // Chuyển đến trang bài học
+                        Intent intent = new Intent(v.getContext(), MatchPictureWithLetterActivity.class);
+                        v.getContext().startActivity(intent);
+                    } else {
+                        Log.d("Lesson", "No lesson found with this ID.");
+                    }
+                }
+
+                @Override
+                public void onGetFailed(Exception e) {
+                    Toast.makeText(v.getContext(), "Tải dữ liệu thất bại!", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 

@@ -3,12 +3,15 @@ package com.example.oneweekenglish.activity;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.content.Intent;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,11 +22,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.oneweekenglish.R;
 import com.example.oneweekenglish.fragment.GreenNoticeFragment;
 import com.example.oneweekenglish.fragment.RedNoticeFragment;
 import com.example.oneweekenglish.fragment.YellowNoticeFragment;
 import com.example.oneweekenglish.model.Word;
+import com.example.oneweekenglish.util.GlobalVariable;
 import com.example.oneweekenglish.util.PronunciationChecker;
 import com.example.oneweekenglish.util.Sound;
 
@@ -35,27 +40,11 @@ public class RepeatActivity  extends AppCompatActivity
         RedNoticeFragment.OnTryAgainListener,
         YellowNoticeFragment.OnTryAgainListenerYellow,
         YellowNoticeFragment.OnNextListener{
-    private static final List<Word> data_words = Arrays.asList(
-            new Word(
-                    "Run",
-                    Arrays.asList( "Chạy"),
-                    Arrays.asList("Move at a speed faster than a walk", "To operate or function"),
-                    "/rʌn/",
-                    "https://example.com/images/run.jpg",
-                    "verb"
-            ),
-            new Word(
-                    "Monkey",
-                    Arrays.asList( "Khỉ"),
-                    Arrays.asList("A small to medium-sized primate", "An intelligent animal that lives in trees"),
-                    "/ˈmʌŋ.ki/",
-                    "https://example.com/images/monkey.jpg",
-                    "noun"
-            )
-    );
+    private static  List<Word> data_words ;
     private ImageButton buttonRecord;
     private TextView textViewCurrentWord;
     private static int currentIndexWord = 0;
+    private ImageView wordImage;
     private Sound sound;
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -63,6 +52,10 @@ public class RepeatActivity  extends AppCompatActivity
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_repeat);
         sound = new Sound(getApplicationContext());
+        wordImage = findViewById(R.id.wordImage);
+
+        // lấy dữ liệu
+        data_words = GlobalVariable.currentLesson.getMatchWordPractice().getWords();
         //set text
         textViewCurrentWord = findViewById(R.id.wordText);
         textViewCurrentWord.setText(data_words.get(currentIndexWord).getContent());
@@ -205,11 +198,22 @@ public class RepeatActivity  extends AppCompatActivity
     }
     private void nextToNewWord(){
         try {
+            if(currentIndexWord == (data_words.size() - 1)){
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                // kết thúc bài học (đáng lẻ làm ở trang tổng kết, để tạm ở đây)
+                GlobalVariable.currentLesson = null;
+                return;
+            }
             currentIndexWord++;
             textViewCurrentWord = findViewById(R.id.wordText);
             String word = data_words.get(currentIndexWord).getContent();
             textViewCurrentWord.setText(word);
             sound.readText(word);
+            // load hình anh
+            Glide.with(this)
+                    .load(data_words.get(currentIndexWord).getImageUrl())
+                    .into(wordImage);
             buttonRecord.setOnClickListener(v -> {
                 initRecognizerChecker(data_words.get(currentIndexWord).getContent());
                 if (pronunciationChecker.hasRecordAudioPermission()) {

@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.oneweekenglish.util.GlobalVariable;
 import com.example.oneweekenglish.util.SpacesItemDecoration;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
@@ -83,18 +84,7 @@ public class SentenceGuessActivity extends AppCompatActivity
         wordRecyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
 
         // Khởi tạo dữ liệu
-        questions = new ArrayList<>();
-        questions.add(new Question(UUID.randomUUID().toString(),
-                "https://res.cloudinary.com/dvjxenags/image/upload/v1747497051/monkey_love_banana_vqvpzv.gif",
-                "Monkeys like bananas"));
-        questions.add(new Question(UUID.randomUUID().toString(),
-                "https://res.cloudinary.com/dvjxenags/image/upload/v1747496464/the_bird_can_fly_rlt6fs.gif",
-                "The bird can fly"));
-        questions.add(new Question(UUID.randomUUID().toString(),
-                "https://res.cloudinary.com/dvjxenags/image/upload/v1747487549/i_like_dog_pk8xja.png", "I like dog"));
-        questions.add(new Question(UUID.randomUUID().toString(),
-                "https://res.cloudinary.com/dvjxenags/image/upload/v1747498090/lion_is_strong_qtrhsd.jpg",
-                "A lion is strong"));
+        questions = GlobalVariable.currentLesson.getGrammarPractice().getQuestions();
 
         currentIndex = 0;
         currentQuestion = questions.get(currentIndex);
@@ -263,6 +253,12 @@ public class SentenceGuessActivity extends AppCompatActivity
 
     @Override
     public void onContinueClicked() {
+        // nếu câu cuối thì chuyển activity
+        if(currentIndex == (questions.size() -1)){
+            Intent intent = new Intent(this, RepeatActivity.class);
+            startActivity(intent);
+            return;
+        }
         // set lại giá trị cho phép chọn
         isSentenceCorrect = false;
         currentUnderlineIndex = 0;
