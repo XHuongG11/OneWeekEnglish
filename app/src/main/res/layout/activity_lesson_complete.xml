@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ED6389"
+    android:padding="16dp">
+
+
+    <!-- Reindeer image -->
+
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="365dp"
+        android:layout_height="515dp"
+        android:src="@drawable/background_lesson_complete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.266" />
+
+    <ImageView
+        android:id="@+id/star2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_star"
+        app:layout_constraintBottom_toTopOf="@+id/txtNumberLesson"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/star1"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:rotation="-10"
+        android:src="@drawable/ic_star"
+        app:layout_constraintBottom_toTopOf="@+id/txtNumberLesson"
+        app:layout_constraintEnd_toStartOf="@+id/star2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/star3"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:rotation="10"
+        android:src="@drawable/ic_star"
+        app:layout_constraintBottom_toTopOf="@+id/txtNumberLesson"
+        app:layout_constraintStart_toEndOf="@+id/star2">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/txtNumberLesson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/baloo2medium"
+        android:text="Lesson 1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txtNameLesson"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        app:layout_constraintTop_toTopOf="@+id/background"
+        app:layout_constraintVertical_bias="1.0"></TextView>
+
+    <TextView
+        android:id="@+id/txtNameLesson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/balooregular"
+        android:text="COMPLETE"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtGoodJob"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/background"></TextView>
+
+    <TextView
+        android:id="@+id/txtGoodJob"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="232dp"
+        android:fontFamily="@font/balooregular"
+        android:text="Good job, Oliver!"
+        android:textColor="#2D2B29"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        app:layout_constraintTop_toTopOf="@+id/background"></TextView>
+
+    <ImageView
+        android:id="@+id/reward"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/reward"
+        app:layout_constraintBottom_toTopOf="@+id/nextButton"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        app:layout_constraintTop_toBottomOf="@+id/txtGoodJob">
+
+    </ImageView>
+
+    <ImageButton
+        android:id="@+id/nextButton"
+        android:layout_width="260dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/button_yellow_background"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintStart_toStartOf="@+id/background" />
+
+    <TextView
+        android:id="@+id/txtButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/balooregular"
+        android:text="NEXT"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/nextButton"
+        app:layout_constraintEnd_toEndOf="@+id/nextButton"
+        app:layout_constraintStart_toStartOf="@+id/nextButton"
+        app:layout_constraintTop_toTopOf="@+id/nextButton" />
+
+    <TextView
+        android:id="@+id/txtHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/balooregular"
+        android:text="BACK TO HOME"
+        android:textColor="#2D2B29"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/nextButton"
+        app:layout_constraintStart_toStartOf="@+id/nextButton"
+        app:layout_constraintTop_toBottomOf="@+id/nextButton">
+
+    </TextView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
