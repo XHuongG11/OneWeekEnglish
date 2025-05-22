@@ -35,31 +35,26 @@
         app:layout_constraintTop_toBottomOf="@id/helloText"/>
 
     <!-- RecyclerView for animals and lessons -->
+
+
+    <!-- Bottom Bar -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lessonRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="75dp"
         android:layout_marginStart="20dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="85dp"
         android:nestedScrollingEnabled="true"
-        app:layout_constraintTop_toBottomOf="@id/nameText"
         app:layout_constraintBottom_toTopOf="@id/bgBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/nameText"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- Thanh tiến trình -->
-    <View
-        android:id="@+id/progressBar"
-        android:layout_width="8dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/bg_progress_bar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <!-- Bottom Bar -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bgBar"
         android:layout_width="0dp"
