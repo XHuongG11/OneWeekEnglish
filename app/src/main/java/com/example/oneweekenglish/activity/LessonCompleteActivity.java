@@ -1,5 +1,6 @@
 package com.example.oneweekenglish.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,16 +16,16 @@ public class LessonCompleteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lesson_complete);
 
-        //ImageButton "NEXT"
+        // ImageButton "NEXT"
         ImageButton nextButton = findViewById(R.id.nextButton);
-        //"BACK TO HOME"
+        // "BACK TO HOME"
         TextView backToHomeText = findViewById(R.id.txtHome);
 
         // Sự kiện click cho nút NEXT
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                // Chưa có chức năng
             }
         });
 
@@ -32,7 +33,9 @@ public class LessonCompleteActivity extends AppCompatActivity {
         backToHomeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                Intent intent = new Intent(LessonCompleteActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
