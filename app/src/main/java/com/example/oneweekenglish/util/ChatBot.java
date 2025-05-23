@@ -28,7 +28,7 @@ public class ChatBot {
     public static void sendToGeminiAPI(Context context, String message, ChatBotCallback callback) {
         OkHttpClient client = new OkHttpClient();
 
-        String apiKey = ""; // thay bằng API key thật
+        String apiKey = "AIzaSyAEigjQoQzWGO99STBSA22yF6qKa_CCSlE"; // thay bằng API key thật
         String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + apiKey;
 
         // Tạo JSON payload
