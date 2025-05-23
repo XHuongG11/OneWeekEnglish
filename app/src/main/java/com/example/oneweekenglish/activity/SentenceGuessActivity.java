@@ -103,7 +103,7 @@ public class SentenceGuessActivity extends AppCompatActivity
         LinearLayout underlineContainer = findViewById(R.id.underlineContainer);
         String[] wordsInSentence = currentQuestion.getContent().split(" ");
         for (int i = 0; i < wordsInSentence.length; i++) {
-            View underlineView = LayoutInflater.from(this).inflate(R.layout.underline_view, underlineContainer, false);
+            View underlineView = LayoutInflater.from(this).inflate(R.layout.underline_view_small, underlineContainer, false);
             TextView wordText = underlineView.findViewById(R.id.letterText);
             wordText.setOnClickListener(v -> {
                 if (isSentenceCorrect) return;

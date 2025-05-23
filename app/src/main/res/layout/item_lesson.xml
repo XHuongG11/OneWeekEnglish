@@ -75,7 +75,7 @@
             android:layout_marginRight="30dp"
             android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:maxWidth="250dp"
+            android:maxWidth="230dp"
             android:lineSpacingExtra="2dp"
             android:maxLines="5"
             android:ellipsize="end"

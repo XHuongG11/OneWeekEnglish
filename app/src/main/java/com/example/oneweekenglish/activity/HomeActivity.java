@@ -159,8 +159,8 @@ public class HomeActivity extends AppCompatActivity {
         lessons.add(new Lesson("29e1a694-f65d-426c-a3cc-fae90ef01602", "Lesson 1 Animals", null, null, null, null));
         lessons.add(new Lesson("4108ffab-4cbd-4e3d-b5b7-5e7be5f3e8cc", "Lesson 2 Family", null, null, null, null));
         lessons.add(new Lesson("3", "Bài 3: Activity", null, null, null, null));
-        lessons.add(new Lesson("4", "Bài 4: Coming soon", null, null, null, null));
-        lessons.add(new Lesson("5", "Bài 5: Coming soon", null, null, null, null));
+        lessons.add(new Lesson("4", "Coming soon", null, null, null, null));
+        lessons.add(new Lesson("5", "Coming soon", null, null, null, null));
         return lessons;
     }
 
