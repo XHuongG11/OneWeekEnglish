@@ -77,7 +77,7 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     // Chuyển sang màn hình chính hoặc hoạt động khác nếu cần
                     saveUserToSharedPreferences(user);
-                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                     Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
                      startActivity(intent);
                      finish();
                 } else {
