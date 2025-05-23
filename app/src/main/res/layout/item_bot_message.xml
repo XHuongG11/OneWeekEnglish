@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="5dp"
+    android:orientation="horizontal"
+    android:gravity="start">
+
+    <!-- Ảnh đại diện bot -->
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/logo"
+
+        android:background="@drawable/circle_background" />
+
+    <!-- Tin nhắn của bot -->
+    <TextView
+        android:id="@+id/textViewBotMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_message_bot"
+        android:padding="10dp"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:fontFamily="@font/baloo2medium"
+        android:maxWidth="280dp" />
+</LinearLayout>

@@ -1,8 +1,12 @@
 package com.example.oneweekenglish.activity;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,11 +36,52 @@ public class HomeActivity extends AppCompatActivity {
     private LessonAdapter lessonAdapter;
     private List<Lesson> lessonList;
     private MediaPlayer mediaPlayer;
+    private ImageView floatingButton;
+    private float dX, dY;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+
+        // Khởi tạo ImageView
+        floatingButton = findViewById(R.id.floatingButton);
+
+        // Cho phép di chuyển ImageView
+        floatingButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Lưu vị trí ban đầu khi chạm
+                        dX = view.getX() - event.getRawX();
+                        dY = view.getY() - event.getRawY();
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        // Cập nhật vị trí mới khi di chuyển
+                        view.animate()
+                                .x(event.getRawX() + dX)
+                                .y(event.getRawY() + dY)
+                                .setDuration(0)
+                                .start();
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+
+        // Sự kiện nhấn để mở ChatbotActivity
+        floatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ChatbotActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // Khởi tạo MediaPlayer
         mediaPlayer = MediaPlayer.create(this, R.raw.background_meditation);

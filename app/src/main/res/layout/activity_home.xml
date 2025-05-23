@@ -2,12 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_home">
 
     <!-- Lời chào -->
+
+
+
     <TextView
         android:id="@+id/helloText"
         android:layout_width="wrap_content"
@@ -95,6 +99,18 @@
             android:src="@drawable/ic_home"
             android:layout_gravity="center"/>
     </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/floatingButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/circle_background"
+        android:elevation="4dp"
+        android:src="@drawable/logo"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="475dp" />
 
     <TextView
         android:id="@+id/txtHome"
