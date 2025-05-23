@@ -15,7 +15,26 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="60dp" />
 
-    <!-- Animal Image (căn giữa theo Guideline, thấp hơn lessonBox) -->
+    <!-- Click Me Box (phía trên animalImage) -->
+    <TextView
+        android:id="@+id/clickMeBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click me to learn"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:fontFamily="@font/baloo"
+        android:background="@drawable/bg_click_me_box"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/animalImage"
+        app:layout_constraintStart_toStartOf="@id/centerGuideline"
+        app:layout_constraintEnd_toEndOf="@id/centerGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Animal Image -->
     <ImageView
         android:id="@+id/animalImage"
         android:layout_width="80dp"
@@ -28,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="@id/centerGuideline"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Lesson Box (bên trái animalImage, co giãn chiều cao theo nội dung) -->
+    <!-- Lesson Box -->
     <LinearLayout
         android:id="@+id/lessonBox"
         android:layout_width="wrap_content"
@@ -42,7 +61,7 @@
         app:layout_constraintEnd_toStartOf="@id/animalImage"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="0dp">
+        android:layout_marginEnd="5dp">
 
         <TextView
             android:id="@+id/lessonTitle"
@@ -53,14 +72,14 @@
             android:textSize="22sp"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:maxWidth="160dp"
+            android:maxWidth="250dp"
             android:lineSpacingExtra="2dp"
             android:maxLines="5"
             android:ellipsize="end"
-            android:text="Một đi qua khu rừng và nói chuyện với con khỉ tí hon"
-            />
+            android:text="Comming soon" />
 
         <ImageButton
             android:id="@+id/startButton"
@@ -68,7 +87,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="25dp"
             android:background="@drawable/bg_start_button"
             android:contentDescription="Start lesson" />

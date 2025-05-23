@@ -199,7 +199,7 @@ public class RepeatActivity  extends AppCompatActivity
     private void nextToNewWord(){
         try {
             if(currentIndexWord == (data_words.size() - 1)){
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, LessonCompleteActivity.class);
                 startActivity(intent);
                 // kết thúc bài học (đáng lẻ làm ở trang tổng kết, để tạm ở đây)
                 GlobalVariable.currentLesson = null;

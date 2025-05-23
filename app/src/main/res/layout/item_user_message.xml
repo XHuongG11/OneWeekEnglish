@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="5dp"
+    android:orientation="horizontal"
+    android:gravity="end">
+
+    <!-- Tin nhắn của người dùng -->
+    <TextView
+        android:id="@+id/textViewUserMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_message_user"
+        android:padding="10dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:fontFamily="@font/baloo2medium"
+        android:maxWidth="280dp" />
+
+    <!-- Ảnh đại diện người dùng -->
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/girl"
+        android:background="@drawable/circle_background" />
+</LinearLayout>

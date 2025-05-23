@@ -1,8 +1,13 @@
 package com.example.oneweekenglish.activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -35,11 +40,68 @@ public class HomeActivity extends AppCompatActivity {
     private List<Lesson> lessonList;
     private ImageView btnGame;
 
+    private MediaPlayer mediaPlayer;
+    private ImageView floatingButton;
+    private float dX, dY;
+    private boolean isDragging;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+
+        // Khởi tạo ImageView
+        floatingButton = findViewById(R.id.floatingButton);
+
+        // Cho phép di chuyển ImageView
+        floatingButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Lưu vị trí ban đầu khi chạm
+                        dX = view.getX() - event.getRawX();
+                        dY = view.getY() - event.getRawY();
+                        isDragging = false; // Reset trạng thái kéo thả
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        // Cập nhật vị trí mới khi di chuyển
+                        view.animate()
+                                .x(event.getRawX() + dX)
+                                .y(event.getRawY() + dY)
+                                .setDuration(0)
+                                .start();
+                        isDragging = true; // Đánh dấu là đang kéo thả
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        // Nếu không phải kéo thả, cho phép sự kiện click được xử lý
+                        if (!isDragging) {
+                            view.performClick(); // Kích hoạt sự kiện click
+                        }
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+
+        // Sự kiện nhấn để mở ChatbotActivity
+        floatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ChatbotActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        // Khởi tạo MediaPlayer
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_meditation);
+        mediaPlayer.setLooping(true); // Nhạc lặp lại
+        mediaPlayer.start();
 
         // dừng nhạc
         MusicManager.stop();
@@ -54,7 +116,7 @@ public class HomeActivity extends AppCompatActivity {
         lessonList = getLessonData();
 
         // Set up adapter
-        lessonAdapter = new LessonAdapter(lessonList);
+        lessonAdapter = new LessonAdapter(lessonList,getApplicationContext());
         lessonRecyclerView.setAdapter(lessonAdapter);
 
         // click vào nút chơi game
@@ -65,7 +127,32 @@ public class HomeActivity extends AppCompatActivity {
 
 //        createDatabaseLesson02();
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Dừng nhạc khi Activity bị tạm dừng
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Phát lại nhạc nếu cần khi Activity quay lại
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Giải phóng MediaPlayer khi thoát Activity
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
     private List<Lesson> getLessonData() {
         List<Lesson> lessons = new ArrayList<>();
         // Hardcoded sample data (replace with database query)
