@@ -38,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private ImageView floatingButton;
     private float dX, dY;
+    private boolean isDragging;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
                         // Lưu vị trí ban đầu khi chạm
                         dX = view.getX() - event.getRawX();
                         dY = view.getY() - event.getRawY();
+                        isDragging = false; // Reset trạng thái kéo thả
                         return true;
 
                     case MotionEvent.ACTION_MOVE:
@@ -65,6 +67,14 @@ public class HomeActivity extends AppCompatActivity {
                                 .y(event.getRawY() + dY)
                                 .setDuration(0)
                                 .start();
+                        isDragging = true; // Đánh dấu là đang kéo thả
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        // Nếu không phải kéo thả, cho phép sự kiện click được xử lý
+                        if (!isDragging) {
+                            view.performClick(); // Kích hoạt sự kiện click
+                        }
                         return true;
 
                     default:
