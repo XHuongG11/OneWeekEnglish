@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         // Khởi tạo MediaPlayer
-        mediaPlayer = MediaPlayer.create(this, R.raw.background_meditation);
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
         mediaPlayer.setLooping(true); // Nhạc lặp lại
         mediaPlayer.start();
 
