@@ -39,6 +39,7 @@ dependencies {
     implementation("androidx.activity:activity:1.10.1")
     implementation("androidx.media3:media3-exoplayer:1.3.1")
     implementation("androidx.media3:media3-common:1.6.1")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation(libs.firebase.firestore)
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
@@ -55,7 +56,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.8.9")
-
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

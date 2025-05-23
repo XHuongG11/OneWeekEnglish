@@ -44,8 +44,8 @@ public class YellowNoticeFragment extends Fragment {
 
         // Xử lý sự kiện nút Try Again
         tryAgainButton.setOnClickListener(v -> {
-            if (getActivity() instanceof OnTryAgainListener) {
-                ((OnTryAgainListener) getActivity()).onTryAgainClicked();
+            if (getActivity() instanceof OnTryAgainListenerYellow) {
+                ((OnTryAgainListenerYellow) getActivity()).onTryAgainYellowClicked();
             }
         });
 
@@ -74,8 +74,8 @@ public class YellowNoticeFragment extends Fragment {
     }
 
     // Định nghĩa interface để Activity implement
-    public interface OnTryAgainListener {
-        void onTryAgainClicked();
+    public interface OnTryAgainListenerYellow {
+        void onTryAgainYellowClicked();
     }
 
     public interface OnNextListener {

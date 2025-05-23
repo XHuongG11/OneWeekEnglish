@@ -1,11 +1,15 @@
 package com.example.oneweekenglish.activity;
 
+import static java.security.AccessController.getContext;
+
+import android.content.Intent;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -17,12 +21,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.oneweekenglish.R;
 import com.example.oneweekenglish.adapter.LetterAdapter;
 import com.example.oneweekenglish.fragment.GreenNoticeFragment;
 import com.example.oneweekenglish.fragment.RedNoticeFragment;
+import com.example.oneweekenglish.model.FillBlank;
 import com.example.oneweekenglish.model.LetterItem;
 import com.example.oneweekenglish.model.Word;
+import com.example.oneweekenglish.util.GlobalVariable;
 import com.example.oneweekenglish.util.Sound;
 
 import java.util.ArrayList;
@@ -44,42 +51,9 @@ public class WordGuessActivity extends AppCompatActivity
     private int currentUnderlineIndex = 0; // Theo dõi vị trí gạch dưới hiện tại
     private boolean isWordCorrect = false; // Cờ để kiểm tra từ đã đúng chưa
     private static final String TAG = "WordGuessActivity";
+    private ImageView wordImage;
 
-
-    private static final List<Word> data_words = Arrays.asList(
-            new Word(
-                    "Cat",
-                    Arrays.asList( "Mèo"),
-                    Arrays.asList("A small domesticated carnivorous mammal", "A feline animal"),
-                    "/kæt/",
-                    "https://example.com/images/cat.jpg",
-                    "noun"
-            ),
-            new Word(
-                    "Pig",
-                    Arrays.asList( "Lợn"),
-                    Arrays.asList("A domesticated hoofed mammal", "An animal kept for its meat (pork)"),
-                    "/pɪɡ/",
-                    "https://example.com/images/pig.jpg",
-                    "noun"
-            ),
-            new Word(
-                    "Monkey",
-                    Arrays.asList( "Khỉ"),
-                    Arrays.asList("A small to medium-sized primate", "An intelligent animal that lives in trees"),
-                    "/ˈmʌŋ.ki/",
-                    "https://example.com/images/monkey.jpg",
-                    "noun"
-            ),
-            new Word(
-                    "Run",
-                    Arrays.asList( "Chạy"),
-                    Arrays.asList("Move at a speed faster than a walk", "To operate or function"),
-                    "/rʌn/",
-                    "https://example.com/images/run.jpg",
-                    "verb"
-            )
-    );
+    private static List<Word> data_words;
 
     private Sound sound;
     @Override
@@ -89,16 +63,30 @@ public class WordGuessActivity extends AppCompatActivity
         setContentView(R.layout.activity_word_guess);
         Log.d(TAG, "onCreate called");
         sound = new Sound(getApplicationContext());
+        wordImage = findViewById(R.id.wordImage);
+
         //khoi tao du lieu va su kien
+        getData();
+
         wordToGuess = data_words.get(currentIndexWord);
         wordToGuess.setContent(wordToGuess.getContent().toUpperCase());
         initDataForWord();
     }
+
+    private void getData() {
+        FillBlank fillBlank = GlobalVariable.currentLesson.getFillBlankPractice();
+        data_words = fillBlank.getWords();
+    }
+
     private void initDataForWord(){
         // Khởi tạo dữ liệu: từ cần đoán và các chữ cái để chọn
         createLetterForGuess();
         // Tạo gạch dưới động
         taoDuLieuDauGachDuoi();
+        // load hình
+        Glide.with(this)
+                .load(wordToGuess.getImageUrl())
+                .into(wordImage);
         // Thiết lập GridView cho các chữ cái
         GridView letterGridView = findViewById(R.id.letterGridView);
         letterAdapter = new LetterAdapter(letterItems, position -> {
@@ -226,9 +214,7 @@ public class WordGuessActivity extends AppCompatActivity
                 SoundPool soundPool = new SoundPool.Builder()
                         .setMaxStreams(5)
                         .build();
-
                 int soundId = soundPool.load(getApplicationContext(), R.raw.lose_game_guess_word, 1);
-
                 soundPool.setOnLoadCompleteListener((sp, id, status) -> {
                     if (status == 0) {
                         soundPool.play(soundId, 1, 1, 0, 0, 1);
@@ -255,8 +241,6 @@ public class WordGuessActivity extends AppCompatActivity
                         soundPool.play(soundId, 1, 1, 0, 0, 1);
                     }
                 });
-
-
                 underlineTextViews.get(currentUnderlineIndex).setText(selectedLetter.getLetter());
                 selectedLetter.setSelected(true);
                 letterAdapter.notifyDataSetChanged();
@@ -304,6 +288,12 @@ public class WordGuessActivity extends AppCompatActivity
 
     @Override
     public void onContinueClicked() {
+        // nếu từ cuối, chuyển sang activity khác
+        if(currentIndexWord == (data_words.size() - 1)){
+            Intent intent = new Intent(this, SentenceGuessActivity.class);
+            startActivity(intent);
+            return;
+        }
         // Chọn từ mới (ví dụ word thứ 4 trong data_words)
         currentIndexWord++;
         wordToGuess = data_words.get(currentIndexWord);
