@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.oneweekenglish.R;
 import com.example.oneweekenglish.adapter.MessageAdapter;
 import com.example.oneweekenglish.model.Message;
+import com.example.oneweekenglish.util.ChatBot;
 
 import java.util.ArrayList;
 
@@ -53,15 +54,34 @@ public class ChatbotActivity extends AppCompatActivity {
                     messageList.add(new Message(userMessage, false));
                     messageAdapter.notifyItemInserted(messageList.size() - 1);
                     recyclerViewChat.scrollToPosition(messageList.size() - 1);
-
-                    // Giả lập phản hồi của bot (thay thế bằng logic thật nếu có API)
-                    String botResponse = "Đây là phản hồi từ bot cho: " + userMessage;
-                    messageList.add(new Message(botResponse, true));
-                    messageAdapter.notifyItemInserted(messageList.size() - 1);
-                    recyclerViewChat.scrollToPosition(messageList.size() - 1);
-
-                    // Xóa nội dung ô nhập liệu
                     editTextMessage.setText("");
+                    //goi api
+                    ChatBot.sendToGeminiAPI(getApplicationContext(), userMessage, new ChatBot.ChatBotCallback() {
+                        @Override
+                        public void onResponse(String message) {
+
+                            // Giả lập phản hồi của bot (thay thế bằng logic thật nếu có API)
+                            String botResponse = message;
+                            messageList.add(new Message(botResponse, true));
+                            messageAdapter.notifyItemInserted(messageList.size() - 1);
+                            recyclerViewChat.scrollToPosition(messageList.size() - 1);
+
+                            // Xóa nội dung ô nhập liệu
+                            editTextMessage.setText("");
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            // Giả lập phản hồi của bot (thay thế bằng logic thật nếu có API)
+                            String botResponse = "Lỗi, vui lòng thử lại ... ";
+                            messageList.add(new Message(botResponse, true));
+                            messageAdapter.notifyItemInserted(messageList.size() - 1);
+                            recyclerViewChat.scrollToPosition(messageList.size() - 1);
+
+                            // Xóa nội dung ô nhập liệu
+                            editTextMessage.setText("");
+                        }
+                    });
                 }
             }
         });
