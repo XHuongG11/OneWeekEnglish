@@ -34,7 +34,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
 
     public void setSelected(String word, boolean selected) {
         selectionState.put(word, selected);
-//        notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     public boolean isSelected(String word) {

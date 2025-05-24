@@ -2,10 +2,12 @@ package com.example.oneweekenglish.activity;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +26,7 @@ import com.example.oneweekenglish.model.Lesson;
 import com.example.oneweekenglish.model.MatchWord;
 import com.example.oneweekenglish.model.Question;
 import com.example.oneweekenglish.model.Word;
+import com.example.oneweekenglish.util.MusicManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView lessonRecyclerView;
     private LessonAdapter lessonAdapter;
     private List<Lesson> lessonList;
+    private ImageView btnGame;
+
     private MediaPlayer mediaPlayer;
     private ImageView floatingButton;
     private float dX, dY;
@@ -98,6 +103,11 @@ public class HomeActivity extends AppCompatActivity {
         mediaPlayer.setLooping(true); // Nhạc lặp lại
         mediaPlayer.start();
 
+        // dừng nhạc
+        MusicManager.stop();
+
+        btnGame = findViewById(R.id.btnGame);
+
         // Initialize RecyclerView
         lessonRecyclerView = findViewById(R.id.lessonRecyclerView);
         lessonRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -109,7 +119,13 @@ public class HomeActivity extends AppCompatActivity {
         lessonAdapter = new LessonAdapter(lessonList,getApplicationContext());
         lessonRecyclerView.setAdapter(lessonAdapter);
 
-//        createDatabase();
+        // click vào nút chơi game
+        btnGame.setOnClickListener(v -> {
+            Intent intent = new Intent(this, WaitingRoomActivity.class);
+            startActivity(intent);
+        });
+
+//        createDatabaseLesson02();
     }
     @Override
     protected void onPause() {
@@ -140,15 +156,15 @@ public class HomeActivity extends AppCompatActivity {
     private List<Lesson> getLessonData() {
         List<Lesson> lessons = new ArrayList<>();
         // Hardcoded sample data (replace with database query)
-        lessons.add(new Lesson("29e1a694-f65d-426c-a3cc-fae90ef01602", "Lesson 1: Animals", null, null, null, null));
-        lessons.add(new Lesson("2", "Bài 2: Activity", null, null, null, null));
-        lessons.add(new Lesson("3", "Bài 3: Tao cau", null, null, null, null));
-        lessons.add(new Lesson("4", "Cooming soon", null, null, null, null));
-        lessons.add(new Lesson("5", "Cooming soon", null, null, null, null));
+        lessons.add(new Lesson("29e1a694-f65d-426c-a3cc-fae90ef01602", "Lesson 1 Animals", null, null, null, null));
+        lessons.add(new Lesson("4108ffab-4cbd-4e3d-b5b7-5e7be5f3e8cc", "Lesson 2 Family", null, null, null, null));
+        lessons.add(new Lesson("3", "Bài 3: Activity", null, null, null, null));
+        lessons.add(new Lesson("4", "Coming soon", null, null, null, null));
+        lessons.add(new Lesson("5", "Coming soon", null, null, null, null));
         return lessons;
     }
 
-    private void createDatabase(){
+    private void createDatabaseLesson01(){
         // Lesson 1: Động vật
         Lesson lesson1 = new Lesson();
         lesson1.setId(UUID.randomUUID().toString());
@@ -215,5 +231,85 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void createDatabaseLesson02(){
+        // Lesson 2: Gia đình (Family)
+        Lesson lesson2 = new Lesson();
+        lesson2.setId(UUID.randomUUID().toString());
+        lesson2.setName("Family");
+
+        // Practice 201: LEARN_WORD
+        LearnWord learnWord2 = new LearnWord();
+        learnWord2.setId(UUID.randomUUID().toString());
+        learnWord2.setType(EPracticeType.LEARN_WORD);
+        learnWord2.setWords(Arrays.asList(
+                new Word("father", Arrays.asList("cha", "bố"), Arrays.asList("a male parent"),
+                        "/ˈfɑː.ðər/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747745087/father_hniwlv.gif", "noun"),
+                new Word("mother", Arrays.asList("mẹ"), Arrays.asList("a female parent"),
+                        "/ˈmʌð.ər/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747745139/mother_pcxlw4.gif", "noun"),
+                new Word("brother", Arrays.asList("anh trai", "em trai"), Arrays.asList("a male sibling"),
+                        "/ˈbrʌð.ər/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747745224/brother_n455wk.png", "noun"),
+                new Word("sister", Arrays.asList("chị gái", "em gái"), Arrays.asList("a female sibling"),
+                        "/ˈsɪs.tər/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747745474/sister_sdox7a.gif", "noun")
+        ));
+        lesson2.setLearnWordPractice(learnWord2);
+
+        // Practice 202: MATCH_WORD
+        MatchWord matchWord2 = new MatchWord();
+        matchWord2.setId(UUID.randomUUID().toString());
+        matchWord2.setType(EPracticeType.MATCH_WORD);
+        matchWord2.setWords(Arrays.asList(
+                new Word("grandfather", Arrays.asList("ông"), Arrays.asList("father of one's father or mother"),
+                        "/ˈɡræn.fɑː.ðər/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747745637/grandfather_xzl5qj.gif", "noun"),
+                new Word("grandmother", Arrays.asList("bà"), Arrays.asList("mother of one's father or mother"),
+                        "/ˈɡræn.mʌð.ər/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747745746/giphy_bxongy.gif", "noun"),
+                new Word("cousin", Arrays.asList("Anh chị em họ"), Arrays.asList("Child of your aunt or uncle"),
+                        "/ˈkʌz.ən/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747746338/Cousin_g0mhfk.gif", "noun"),
+                new Word("aunt", Arrays.asList("cô", "dì", "bác gái"), Arrays.asList("sister of one's parent"),
+                        "/ɑːnt/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747746710/aunt_gsac3s.gif", "noun")
+        ));
+        lesson2.setMatchWordPractice(matchWord2);
+
+        // Practice 203: FILL_BLANK
+        FillBlank fillBlank2 = new FillBlank();
+        fillBlank2.setId(UUID.randomUUID().toString());
+        fillBlank2.setType(EPracticeType.FILL_BLANK);
+        fillBlank2.setWords(Arrays.asList(
+                new Word("Parents", Arrays.asList("Cha mẹ"), Arrays.asList("Mother and father"),
+                        "/ˈpeə.rənts/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747751987/parents_q4ttsz.gif", "noun"),
+                new Word("Family", Arrays.asList("Gia đình"), Arrays.asList("A group consisting of parents and children"),
+                        "/ˈfæm.əl.i/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747751928/family_kugy92.gif", "noun"),
+                new Word("Love", Arrays.asList("Tình yêu", "Yêu thương"), Arrays.asList("An intense feeling of affection"),
+                        "/lʌv/", "https://res.cloudinary.com/dvjxenags/image/upload/v1747751930/love_dzdvnr.gif", "noun/verb"),
+                new Word("Child", Arrays.asList("Đứa trẻ", "Con"), Arrays.asList("A young human being"), "/tʃaɪld/",
+                        "https://res.cloudinary.com/dvjxenags/image/upload/v1747751928/child_etvffc.gif", "noun")
+        ));
+        lesson2.setFillBlankPractice(fillBlank2);
+
+        // Practice 204: GRAMMAR
+        Grammar grammar2 = new Grammar();
+        grammar2.setId(UUID.randomUUID().toString());
+        grammar2.setType(EPracticeType.GRAMMAR);
+        grammar2.setQuestions(Arrays.asList(
+                new Question("1", "https://res.cloudinary.com/dvjxenags/image/upload/v1747664600/family_dinner_q1.jpg", "We are having dinner together"),
+                new Question("2", "https://res.cloudinary.com/dvjxenags/image/upload/v1747664601/my_grandparents_q2.jpg", "These are my grandparents"),
+                new Question("3", "https://res.cloudinary.com/dvjxenags/image/upload/v1747745474/sister_sdox7a.gif", "She is my sister"),
+                new Question("4", "https://res.cloudinary.com/dvjxenags/image/upload/v1747664503/we_love_each_other_q4.jpg", "We love each other")
+        ));
+        lesson2.setGrammarPractice(grammar2);
+
+// Lưu vào database
+        LessonDAO lessonDAO = new LessonDAO();
+        lessonDAO.create(lesson2, new OnSaveUpdateListener() {
+            @Override
+            public void onComplete(boolean success) {
+                if (success) {
+                    Log.d("Firebase", "Lesson 2 (Family) saved successfully.");
+                } else {
+                    Log.d("Firebase", "Failed to save Lesson 2.");
+                }
+            }
+        });
+
     }
 }

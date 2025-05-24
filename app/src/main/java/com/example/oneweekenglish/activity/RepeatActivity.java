@@ -224,6 +224,7 @@ public class RepeatActivity  extends AppCompatActivity
                     Log.e("RECORD", "This app doesn't have permission to record");
                 }
             });
+            hideFragment();
         }catch (Exception ex){
             Log.e(ex.getMessage(),"Bug from repeat activity");
         }

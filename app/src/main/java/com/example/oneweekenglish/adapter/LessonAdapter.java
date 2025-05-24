@@ -151,7 +151,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
             case "29e1a694-f65d-426c-a3cc-fae90ef01602":
             case "Bài 1: Giraffe Adventure":
                 return "https://res.cloudinary.com/dvjxenags/image/upload/v1747884889/output-onlinegiftools_3_qy2llj.gif";
-            case "2":
+            case "4108ffab-4cbd-4e3d-b5b7-5e7be5f3e8cc":
             case "Bài 2: Monkey Puzzle":
                 return "https://res.cloudinary.com/dvjxenags/image/upload/v1747896412/output-onlinegiftools_4_nmzg0d.gif";
             case "3":

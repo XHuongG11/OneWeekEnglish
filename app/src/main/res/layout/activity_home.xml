@@ -139,11 +139,12 @@
         app:layout_constraintStart_toStartOf="@id/bgBar">
 
         <ImageView
+            android:id="@+id/btnGame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/bg_button_more"
+            android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:layout_gravity="center"/>
+            android:src="@drawable/bg_button_more" />
 
         <ImageView
             android:layout_width="40dp"
