@@ -67,6 +67,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Bitmap scaledBackground;
     private boolean isStartGame;
     private boolean isWin = false;
+    private MediaPlayer mediaPlayer;
+
     public GameSurfaceView(Context context, String roomId, String uid) {
         super(context);
         this.roomId = roomId;
@@ -78,6 +80,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setColor(Color.BLACK);
         paint.setTextSize(50);
         setFocusable(true);
+
+        // phát nhạt nền
+        mediaPlayer = MediaPlayer.create(context, R.raw.background_sound_shooting_word);
+        mediaPlayer.setLooping(true); // Nhạc lặp lại
+        mediaPlayer.start();
     }
 
     @Override
@@ -350,7 +357,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         canvas.drawRect(20, 20 + offsetY, 520, 160 + offsetY, paint);
 
         paint.setColor(Color.WHITE);
-        canvas.drawText("You: " + myName, 40, 80 + offsetY, paint);
+        canvas.drawText("You", 40, 80 + offsetY, paint);
         canvas.drawText("Score: " + score, 40, 130 + offsetY, paint);
 
         // Góc phải cho đối thủ
@@ -359,13 +366,20 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         paint.setColor(Color.WHITE);
         paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText("Opponent: " + opponentName, getWidth() - 40, 80 + offsetY, paint);
+        canvas.drawText("Competitor ", getWidth() - 40, 80 + offsetY, paint);
         canvas.drawText("Score: " + opponentScore, getWidth() - 40, 130 + offsetY, paint);
     }
 
 
     @Override public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
     @Override public void surfaceDestroyed(SurfaceHolder holder) {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
         if (thread != null) thread.setRunning(false);
     }
 

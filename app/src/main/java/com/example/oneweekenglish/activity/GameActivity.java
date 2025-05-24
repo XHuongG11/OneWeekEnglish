@@ -1,5 +1,6 @@
 package com.example.oneweekenglish.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.example.oneweekenglish.R;
 
 public class GameActivity extends AppCompatActivity {
 
+    private ConstraintLayout btnCatchlistGame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,12 @@ public class GameActivity extends AppCompatActivity {
                 //Toast.makeText(GameActivity.this, "Sport Quiz clicked!", Toast.LENGTH_SHORT).show();
                 // startActivity(new Intent(MainActivity.this, SportQuizActivity.class));
             }
+        });
+
+        btnCatchlistGame = findViewById(R.id.llSportQuiz);
+        btnCatchlistGame.setOnClickListener(v -> {
+            Intent intent = new Intent(this, WaitingRoomActivity.class);
+            startActivity(intent);
         });
 
         // Load image into ImageView using Glide with hardcoded Cloudinary URL
@@ -64,5 +72,7 @@ public class GameActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(imageUrl5)
                 .into(game4);
+
+
     }
 }

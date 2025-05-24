@@ -54,7 +54,7 @@ public class WordGuessActivity extends AppCompatActivity
     private ImageView wordImage;
 
     private static List<Word> data_words;
-
+    private TextView txtLesson;
     private Sound sound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,8 @@ public class WordGuessActivity extends AppCompatActivity
         Log.d(TAG, "onCreate called");
         sound = new Sound(getApplicationContext());
         wordImage = findViewById(R.id.wordImage);
+        txtLesson = findViewById(R.id.numberLessonText);
+        txtLesson.setText(GlobalVariable.currentLesson.getName());
 
         //khoi tao du lieu va su kien
         getData();

@@ -103,8 +103,6 @@ public class HomeActivity extends AppCompatActivity {
         mediaPlayer.setLooping(true); // Nhạc lặp lại
         mediaPlayer.start();
 
-        // dừng nhạc
-        MusicManager.stop();
 
         btnGame = findViewById(R.id.btnGame);
 
@@ -121,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // click vào nút chơi game
         btnGame.setOnClickListener(v -> {
-            Intent intent = new Intent(this, WaitingRoomActivity.class);
+            Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
         });
 

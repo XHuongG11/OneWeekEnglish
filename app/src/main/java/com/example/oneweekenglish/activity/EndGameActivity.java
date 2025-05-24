@@ -13,12 +13,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.oneweekenglish.R;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.Objects;
 
 public class EndGameActivity extends AppCompatActivity {
     private ImageView imgResult;
     private TextView txtResult;
+    private MaterialButton btnBackHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class EndGameActivity extends AppCompatActivity {
 
         imgResult = findViewById(R.id.imgResultGame);
         txtResult = findViewById(R.id.txtResultGame);
+        btnBackHome = findViewById(R.id.btnHomeFormGame);
 
         // Lấy dữ liệu từ Intent
         Intent intent = getIntent();
@@ -48,6 +51,12 @@ public class EndGameActivity extends AppCompatActivity {
                     .into(imgResult);
             txtResult.setText("Bạn đã thua rồi");
         }
+
+        // quay về trang home
+        btnBackHome.setOnClickListener(v -> {
+            Intent intentHome = new Intent(this, HomeActivity.class);
+            startActivity(intentHome);
+        });
 
     }
 }

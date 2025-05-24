@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/shooting_word" />
+        app:srcCompat="@drawable/catchlish" />
 
     <ImageView
         android:id="@+id/avatar"
@@ -34,8 +34,7 @@
         android:id="@+id/tvPlayerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Player_01"
+        android:layout_marginTop="4dp"
         android:textColor="#1B1B1B"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -22,6 +22,11 @@
         <activity
             android:name=".activity.GameActivity"
             android:exported="true">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".activity.ChatbotActivity"
@@ -113,6 +118,9 @@
             android:exported="false" />
         <activity
             android:name=".activity.WaitingRoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EndGameActivity"
             android:exported="false" />
 
         <meta-data

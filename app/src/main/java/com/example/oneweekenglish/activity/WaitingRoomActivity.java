@@ -52,6 +52,7 @@ public class WaitingRoomActivity extends AppCompatActivity {
     private TextView tvGameRules;
     private TextView gameStartText;
     private final String[] matchedPlayerUid = new String[1];
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,9 @@ public class WaitingRoomActivity extends AppCompatActivity {
         });
 
         // phát nhạt nền
-        MusicManager.start(this, R.raw.background_sound_shooting_word);
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_sound_shooting_word);
+        mediaPlayer.setLooping(true); // Nhạc lặp lại
+        mediaPlayer.start();
 
         btnFindMatch = findViewById(R.id.btnFindMatch);
         btnFindMatch.setVisibility(View.VISIBLE);
@@ -228,6 +231,34 @@ public class WaitingRoomActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Dừng nhạc khi Activity bị tạm dừng
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Phát lại nhạc nếu cần khi Activity quay lại
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Giải phóng MediaPlayer khi thoát Activity
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
     private Map<String, Object> wordsInit() {
         Map<String, Object> words = new HashMap<>();
         words.put("1", createWord("apple", "quả táo"));
@@ -291,13 +322,12 @@ public class WaitingRoomActivity extends AppCompatActivity {
         tvGameRules.setMovementMethod(new ScrollingMovementMethod());
         String title = "🎮 Luật Chơi - Shooting Word\n\n";
         String body =
-                "🕹️ Nhiệm vụ:\n" +
-                        "• Bắn các từ tiếng Anh bay trên màn hình.\n" +
-                        "• Mỗi từ có nghĩa tiếng Việt tương ứng.\n" +
-                        "• Bắn đúng từ theo nghĩa được cho!\n\n" +
-                        "⚡ Chiến thắng:\n" +
-                        "• Ai hoàn thành tất cả từ nhanh & chính xác nhất sẽ thắng!\n\n" +
-                        "👑 Thử thách tốc độ và trí nhớ của bạn ngay bây giờ!";
+                        "🕹️ Cách chơi:\n" +
+                        "• Từ vựng tiếng Anh sẽ rơi từ trên xuống như những quả bóng.\n" +
+                        "• Màn hình sẽ hiển thị nghĩa tiếng Việt của từ cần tìm.\n" +
+                        "• Di chuyển nhân vật sang trái/phải để hứng đúng từ tiếng Anh có nghĩa trùng khớp.\n" +
+                        "• Hứng đúng tất cả từ được yêu cầu trong thời gian nhanh nhất, để giành chiến thắng.\n" +
+                        "👑 Đây là trò chơi giúp bạn rèn luyện từ vựng, phản xạ và ghi nhớ siêu nhanh!";
 
         SpannableString spannable = new SpannableString(title + body);
 

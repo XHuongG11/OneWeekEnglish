@@ -54,14 +54,14 @@
             android:id="@+id/tvSportQuiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/baloo"
-            android:text="Sport Quiz"
+            android:text="Catchlish "
             android:textColor="#F8F6F6"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="20dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivSportQuiz"
