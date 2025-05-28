@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">OneWeekEnglish</string>
+    <string-array name="lesson_list">
+        <item>Animals</item>
+        <item>Family</item>
+        <item>Activity</item>
+    </string-array>
 </resources>

@@ -46,7 +46,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private final Paint paint;
     private final Random random = new Random();
     private List<FlyingWord> randomWords;
-    private FlyingWord currentTarget;
 
     private final String roomId;
     private final String uid;
@@ -181,17 +180,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
                 for (DataSnapshot wordSnap : wordsSnapshot.getChildren()) {
                     String word = wordSnap.child("word").getValue(String.class);
-                    String meaning = wordSnap.child("mean").getValue(String.class);
+                    boolean meaning = Boolean.TRUE.equals(wordSnap.child("isCorrect").getValue(Boolean.class));
                     float x = random.nextInt(getWidth() - 200) + 100;
                     float y = 0;
                     int speed = wordSnap.child("speed").getValue(Long.class).intValue();
 
                     FlyingWord fw = new FlyingWord(word, meaning, x, y, speed);
                     randomWords.add(fw);
-                }
-
-                if (!randomWords.isEmpty()) {
-                    currentTarget = randomWords.get(random.nextInt(randomWords.size()));
                 }
 
                 DataSnapshot isStartGameSnapshot = snapshot.child("gameStarted");
@@ -267,13 +262,33 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                         // Tạo từ mới mỗi spawnDelay nếu chưa quá nhiều
                         long currentTime = System.currentTimeMillis();
                         if (currentTime - lastSpawnTime > spawnDelay && randomWords != null && !randomWords.isEmpty() && words.size() < 5) {
-                            FlyingWord newWord = randomWords.get(random.nextInt(randomWords.size()));
-                            float x = random.nextInt(getWidth() - 200) + 100;
-                            int speed = random.nextInt(5) + 5;
 
-                            words.add(new FlyingWord(newWord.word, newWord.meaning, x, 0, speed));
-                            lastSpawnTime = currentTime;
+                            // Tạo danh sách từ chưa có trong words
+                            List<FlyingWord> availableWords = new ArrayList<>();
+                            for (FlyingWord candidate : randomWords) {
+                                boolean exists = false;
+                                for (FlyingWord w : words) {
+                                    if (w.word.equals(candidate.word)) {
+                                        exists = true;
+                                        break;
+                                    }
+                                }
+                                if (!exists) {
+                                    availableWords.add(candidate);
+                                }
+                            }
+
+                            if (!availableWords.isEmpty()) {
+                                FlyingWord newWord = availableWords.get(random.nextInt(availableWords.size()));
+
+                                float x = random.nextInt(getWidth() - 200) + 100;
+                                int speed = random.nextInt(5) + 5;
+
+                                words.add(new FlyingWord(newWord.word, newWord.isCorrect, x, 0, speed));
+                                lastSpawnTime = currentTime;
+                            }
                         }
+
 
                         // Vẽ và cập nhật vị trí các từ đang rơi
                         Iterator<FlyingWord> iterator = words.iterator();
@@ -287,7 +302,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                                     playerX + playerWidth, getHeight() - 20);
                             // Kiểm tra va chạm
                             if (RectF.intersects(wordRect, playerRect))  {
-                                if (currentTarget != null && word.word.equals(currentTarget.word)) {
+                                Log.d("DEBUG: ", "có va chạm");
+                                if (word.isCorrect) {
+                                    Log.d("DEBUG: ", "từ đúng");
                                     MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.correct_word_game);
                                     mediaPlayer.start();
                                     // Giải phóng sau khi phát xong
@@ -298,16 +315,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                                     // Xoá currentTarget khỏi danh sách randomWords
                                     Iterator<FlyingWord> randomIt = randomWords.iterator();
                                     while (randomIt.hasNext()) {
-                                        if (randomIt.next().word.equals(currentTarget.word)) {
+                                        if (randomIt.next().word.equals(word.word)) {
                                             randomIt.remove();
                                             break;
                                         }
                                     }
-                                    currentTarget = randomWords.isEmpty() ? null :
-                                            randomWords.get(random.nextInt(randomWords.size()));
 
+                                    // kiểm tra randoms words còn từ nào là true không
                                     // Kết thúc game
-                                    if (currentTarget == null) {
+                                    if (randomWords.isEmpty() || randomWords.stream().noneMatch(r -> r.isCorrect)) {
                                         isWin = true;
                                         // end game
                                         roomRef.child("gameStarted").setValue(false);
@@ -333,7 +349,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                         // Vẽ thông tin
                         drawPlayerInfo(canvas);
                         paint.setTextAlign(Paint.Align.CENTER);
-                        canvas.drawText("Từ cần hứng: " + (currentTarget != null ? currentTarget.meaning : "Xong!"), getWidth() / 2f, 400, paint);
                     }
                 } finally {
                     if (canvas != null) surfaceHolder.unlockCanvasAndPost(canvas);
@@ -369,7 +384,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         canvas.drawText("Competitor ", getWidth() - 40, 80 + offsetY, paint);
         canvas.drawText("Score: " + opponentScore, getWidth() - 40, 130 + offsetY, paint);
     }
-
 
     @Override public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
     @Override public void surfaceDestroyed(SurfaceHolder holder) {

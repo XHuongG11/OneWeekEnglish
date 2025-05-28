@@ -4,4 +4,5 @@ import com.example.oneweekenglish.model.Lesson;
 
 public class GlobalVariable {
     public static Lesson currentLesson = null;
+    public static String lessonGame = "Animals";
 }
