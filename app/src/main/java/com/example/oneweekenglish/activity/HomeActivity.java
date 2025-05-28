@@ -1,6 +1,7 @@
 package com.example.oneweekenglish.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.oneweekenglish.R;
 import com.example.oneweekenglish.adapter.LessonAdapter;
+import com.example.oneweekenglish.dao.LearningProgressDAO;
 import com.example.oneweekenglish.dao.LessonDAO;
 import com.example.oneweekenglish.dao.OnSaveUpdateListener;
 import com.example.oneweekenglish.model.EPracticeType;
@@ -25,12 +27,16 @@ import com.example.oneweekenglish.model.LearnWord;
 import com.example.oneweekenglish.model.Lesson;
 import com.example.oneweekenglish.model.MatchWord;
 import com.example.oneweekenglish.model.Question;
+import com.example.oneweekenglish.model.User;
 import com.example.oneweekenglish.model.Word;
 import com.example.oneweekenglish.util.MusicManager;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity {
@@ -42,6 +48,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private ImageView floatingButton;
+    private LearningProgressDAO learningProgressDAO;
+    private User currentUser;
     private float dX, dY;
     private boolean isDragging;
     @Override
@@ -49,6 +57,22 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+        // Lấy thông tin người dùng từ SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("CurentUser", MODE_PRIVATE);
+        String userId = prefs.getString("userId", null);
+        String email = prefs.getString("email", null);
+        String fullName = prefs.getString("fullName", null);
+        if (userId == null || email == null || fullName == null) {
+            Log.e("HomeActivity", "User data missing in SharedPreferences");
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+        currentUser = new User(userId, email, fullName, null); // Constructor 4 tham số
+
+        // Khởi tạo DAO
+        learningProgressDAO = new LearningProgressDAO();
 
         // Khởi tạo ImageView
         floatingButton = findViewById(R.id.floatingButton);
@@ -114,9 +138,10 @@ public class HomeActivity extends AppCompatActivity {
         lessonList = getLessonData();
 
         // Set up adapter
-        lessonAdapter = new LessonAdapter(lessonList,getApplicationContext());
+        lessonAdapter = new LessonAdapter(lessonList,getApplicationContext(), currentUser.getId());
         lessonRecyclerView.setAdapter(lessonAdapter);
-
+        // Gọi hàm kiểm tra xem user đã hoàn thành hết bài học chưa
+        checkAllLessonsCompleted(currentUser.getId(), lessonList, lessonAdapter);
         // click vào nút chơi game
         btnGame.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
@@ -124,6 +149,35 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 //        createDatabaseLesson02();
+    }
+    private void checkAllLessonsCompleted(String userId, List<Lesson> lessonList, LessonAdapter adapter) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("learningProgresses")
+                .whereEqualTo("user.id", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int completedCount = 0;
+
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        Object practiceCompletionObj = doc.get("practiceCompletion");
+                        if (practiceCompletionObj instanceof Map) {
+                            Map<String, Object> practiceCompletion = (Map<String, Object>) practiceCompletionObj;
+                            Boolean learnWord = (Boolean) practiceCompletion.get("LEARN_WORD");
+                            if (learnWord != null && learnWord) {
+                                completedCount++;
+                            }
+                        }
+                    }
+
+                    // Nếu đếm >= 4 bài học thì gọi adapter set flag
+                    if (completedCount >= 4) {
+                        adapter.setAllLessonsCompleted(true);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error getting learning progresses", e);
+                });
     }
     @Override
     protected void onPause() {

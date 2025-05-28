@@ -76,6 +76,7 @@ public class LearningProgressDAO {
                 });
     }
 
+
     public void getByID(String learningProgressID, OnGetByIdListener<LearningProgress> listener)
     {
         db.collection("learningProgresses")

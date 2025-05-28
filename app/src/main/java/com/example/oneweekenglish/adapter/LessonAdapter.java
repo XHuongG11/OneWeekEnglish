@@ -3,6 +3,7 @@ package com.example.oneweekenglish.adapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.SoundPool;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,18 +24,24 @@ import com.example.oneweekenglish.dao.LessonDAO;
 import com.example.oneweekenglish.dao.OnGetByIdListener;
 import com.example.oneweekenglish.model.Lesson;
 import com.example.oneweekenglish.util.GlobalVariable;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.List;
+import java.util.Map;
 
 public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonViewHolder> {
 
     private List<Lesson> lessonList;
     private int visiblePosition = 0;
     private Context context;
+    private String userId;
+    private boolean allLessonsCompleted = false;
 
-    public LessonAdapter(List<Lesson> lessonList, Context context) {
+    public LessonAdapter(List<Lesson> lessonList, Context context, String userId) {
         this.lessonList = lessonList;
         this.context = context;
+        this.userId = userId;
     }
 
     @NonNull
@@ -48,7 +55,11 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
     public void onBindViewHolder(@NonNull LessonViewHolder holder, int position) {
         Lesson lesson = lessonList.get(position);
         holder.lessonTitle.setText(lesson.getName() != null ? lesson.getName() : "Unknown Lesson");
-
+        if (allLessonsCompleted) {
+            holder.startButton.setVisibility(View.GONE);
+        } else {
+            holder.startButton.setVisibility(View.VISIBLE);
+        }
         // Load image using Glide
         String imageUrl = getAnimalImageUrlForLesson(lesson);
         Glide.with(context)
@@ -183,5 +194,9 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
             startButton = itemView.findViewById(R.id.startButton);
             clickMeBox = itemView.findViewById(R.id.clickMeBox);
         }
+    }
+    public void setAllLessonsCompleted(boolean completed) {
+        this.allLessonsCompleted = completed;
+        notifyDataSetChanged(); // cập nhật lại recyclerView để ẩn hiện nút start
     }
 }

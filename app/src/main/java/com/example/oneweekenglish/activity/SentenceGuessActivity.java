@@ -2,6 +2,7 @@ package com.example.oneweekenglish.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -23,6 +24,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.oneweekenglish.dao.LearningProgressDAO;
+import com.example.oneweekenglish.dao.OnGetByIdListener;
+import com.example.oneweekenglish.model.EPracticeType;
+import com.example.oneweekenglish.model.LearningProgress;
+import com.example.oneweekenglish.model.LessonProgress;
+import com.example.oneweekenglish.model.User;
 import com.example.oneweekenglish.util.GlobalVariable;
 import com.example.oneweekenglish.util.SpacesItemDecoration;
 import com.google.android.flexbox.FlexDirection;
@@ -72,6 +79,7 @@ public class SentenceGuessActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sentence_guess);
+        checkIfLessonAlreadyCompletedThenNext();
         Log.d(TAG, "onCreate called");
 
         sound = new Sound(getApplicationContext());
@@ -255,6 +263,7 @@ public class SentenceGuessActivity extends AppCompatActivity
     public void onContinueClicked() {
         // nếu câu cuối thì chuyển activity
         if(currentIndex == (questions.size() -1)){
+            saveLearningProgress();
             Intent intent = new Intent(this, RepeatActivity.class);
             startActivity(intent);
             return;
@@ -357,6 +366,118 @@ public class SentenceGuessActivity extends AppCompatActivity
         for (String word : answers) {
             Log.d("TAG", word != null ? word : "message is null");
         }
+    }
+    private void saveLearningProgress() {
+        SharedPreferences prefs = getSharedPreferences("CurentUser", MODE_PRIVATE);
+        String userId = prefs.getString("userId", null);
+        String email = prefs.getString("email", null);
+        String fullName = prefs.getString("fullName", null);
+
+        if (userId == null || email == null || fullName == null) {
+            Toast.makeText(this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        User currentUser = new User(userId, email, fullName, null);
+
+        LearningProgressDAO lpDAO = new LearningProgressDAO();
+
+        lpDAO.getByUser(currentUser, new OnGetByIdListener<LearningProgress>() {
+            @Override
+            public void onGetByID(LearningProgress lp) {
+                if (lp == null) {
+                    lp = new LearningProgress(currentUser, new ArrayList<>());
+                }
+
+                String lessonId = GlobalVariable.currentLesson.getId();
+                List<LessonProgress> list = lp.getLessonProgress();
+                LessonProgress target = null;
+
+                for (LessonProgress p : list) {
+                    if (lessonId.equals(p.getLesson().getId())) {
+                        target = p;
+                        break;
+                    }
+                }
+
+                if (target == null) {
+                    target = new LessonProgress(GlobalVariable.currentLesson, 100.0);
+                    list.add(target);
+                } else {
+                    target.setPercent(100.0);
+                }
+
+                target.markPracticeCompleted(EPracticeType.GRAMMAR);
+                lp.setLessonProgress(list);
+
+                if (lp.getId() == null) {
+                    lpDAO.create(lp, success -> {
+                        if (success) {
+                            Toast.makeText(SentenceGuessActivity.this, "Tiến độ đã lưu!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SentenceGuessActivity.this, "Lưu tiến độ thất bại!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    lpDAO.update(lp.getId(), lp, success -> {
+                        if (success) {
+                            Toast.makeText(SentenceGuessActivity.this, "Tiến độ đã cập nhật!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SentenceGuessActivity.this, "Cập nhật tiến độ thất bại!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onGetFailed(Exception e) {
+                Toast.makeText(SentenceGuessActivity.this, "Lỗi truy xuất tiến độ!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void checkIfLessonAlreadyCompletedThenNext() {
+        SharedPreferences prefs = getSharedPreferences("CurentUser", MODE_PRIVATE);
+        String userId = prefs.getString("userId", null);
+        String email = prefs.getString("email", null);
+        String fullName = prefs.getString("fullName", null);
+
+        if (userId == null || email == null || fullName == null) {
+            Toast.makeText(this, "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        User currentUser = new User(userId, email, fullName, null);
+        String currentLessonId = GlobalVariable.currentLesson.getId();
+
+        LearningProgressDAO lpDAO = new LearningProgressDAO();
+
+        lpDAO.getByUser(currentUser, new OnGetByIdListener<LearningProgress>() {
+            @Override
+            public void onGetByID(LearningProgress lp) {
+                if (lp == null || lp.getLessonProgress() == null) return;
+
+                for (LessonProgress p : lp.getLessonProgress()) {
+                    if (currentLessonId.equals(p.getLesson().getId())) {
+                        if (p.getPercent() >= 100 && p.isPracticeCompleted(EPracticeType.GRAMMAR)) {
+                            // ✅ Đã học xong → chuyển sang WordGuessActivity
+                            goToWordGuessActivity();
+                            return;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onGetFailed(Exception e) {
+                Toast.makeText(SentenceGuessActivity.this, "Không thể kiểm tra tiến độ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void goToWordGuessActivity() {
+        Intent intent = new Intent(this, RepeatActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
