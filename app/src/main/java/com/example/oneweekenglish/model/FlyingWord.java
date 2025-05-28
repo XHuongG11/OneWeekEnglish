@@ -6,13 +6,13 @@ import android.graphics.Paint;
 
 public class FlyingWord {
     public String word;
-    public String meaning;
+    public boolean isCorrect;
     public float x, y;
     public int speed;
 
-    public FlyingWord(String word, String meaning, float x, float y, int speed) {
+    public FlyingWord(String word, boolean isCorrect, float x, float y, int speed) {
         this.word = word;
-        this.meaning = meaning;
+        this.isCorrect = isCorrect;
         this.x = x;
         this.y = y;
         this.speed = speed;

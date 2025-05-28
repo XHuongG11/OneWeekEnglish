@@ -14,9 +14,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -30,6 +34,7 @@ import com.example.oneweekenglish.R;
 import com.example.oneweekenglish.model.FlyingWord;
 import com.example.oneweekenglish.model.Player;
 import com.example.oneweekenglish.model.Room;
+import com.example.oneweekenglish.util.GlobalVariable;
 import com.example.oneweekenglish.util.MusicManager;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -65,6 +70,28 @@ public class WaitingRoomActivity extends AppCompatActivity {
             return insets;
         });
 
+        // ds các lesson
+        Spinner spinnerLessons = findViewById(R.id.spinnerLessons);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.lesson_list, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLessons.setAdapter(adapter);
+
+        spinnerLessons.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //                Toast.makeText(WaitingRoomActivity.this, "Bạn chọn: " + selectedLesson, Toast.LENGTH_SHORT).show();
+                GlobalVariable.lessonGame = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // phát nhạt nền
         mediaPlayer = MediaPlayer.create(this, R.raw.background_sound_shooting_word);
         mediaPlayer.setLooping(true); // Nhạc lặp lại
@@ -81,7 +108,6 @@ public class WaitingRoomActivity extends AppCompatActivity {
         showGameRulesDialog();
 
         String uid = String.valueOf(random.nextInt(100));
-        String name = "Player_" + uid;
 
         btnFindMatch.setOnClickListener(v -> {
             // phát âm thanh
@@ -125,19 +151,25 @@ public class WaitingRoomActivity extends AppCompatActivity {
 
                     if (players == null || players.isEmpty()) {
                         // Không có ai trong hàng đợi -> thêm mình vào
-                        Player player = new Player(uid, name);
+                        Player player = new Player(uid, GlobalVariable.lessonGame);
                         currentData.child(uid).setValue(player);
                         return Transaction.success(currentData);
                     } else if (!players.containsKey(uid)) {
                         // Có người khác đang chờ -> ghép
                         for (String otherUid : players.keySet()) {
                             if (!otherUid.equals(uid)) {
-                                matchedPlayerUid[0] = otherUid;
+                                // Lấy lesson của người chơi đang chờ
+                                String otherLesson = currentData.child(otherUid).child("name").getValue(String.class);
 
-                                // Xóa cả hai khỏi waiting room
-                                currentData.child(otherUid).setValue(null);
-                                currentData.child(uid).setValue(null);
-                                return Transaction.success(currentData);
+                                // So sánh lesson
+                                if (otherLesson != null && otherLesson.equals(GlobalVariable.lessonGame)) {
+                                    matchedPlayerUid[0] = otherUid;
+
+                                    // Xóa cả hai khỏi hàng đợi
+                                    currentData.child(otherUid).setValue(null);
+                                    currentData.child(uid).setValue(null);
+                                    return Transaction.success(currentData);
+                                }
                             }
                         }
                     }
@@ -160,8 +192,8 @@ public class WaitingRoomActivity extends AppCompatActivity {
                         DataSnapshot otherSnap = currentData.child(otherUid);
 
                         // Trong 1 trường hợp snapshot đã bị xóa, cần check
-                        Player me = new Player(uid, name); // fallback nếu null
-                        Player opponent = new Player(otherUid, "Unknown");
+                        Player me = new Player(uid, GlobalVariable.lessonGame); // fallback nếu null
+                        Player opponent = new Player(otherUid, GlobalVariable.lessonGame);
 
                         if (mySnap.exists()) {
                             me = mySnap.getValue(Player.class);
@@ -201,7 +233,7 @@ public class WaitingRoomActivity extends AppCompatActivity {
                         });
                     } else {
                         // Không tìm thấy ai để ghép, thêm mình vào hàng đợi
-                        Player me = new Player(uid, name);
+                        Player me = new Player(uid, GlobalVariable.lessonGame);
                         FirebaseDatabase.getInstance().getReference("waitingPlayers")
                                 .child(uid).setValue(me);
                         Log.d("Matchmaking", "Added to waiting room");
@@ -259,31 +291,53 @@ public class WaitingRoomActivity extends AppCompatActivity {
         }
     }
 
-    private Map<String, Object> wordsInit() {
+    private Map<String, Object> wordsAnimalsInit() {
         Map<String, Object> words = new HashMap<>();
-        words.put("1", createWord("apple", "quả táo"));
-        words.put("2", createWord("banana", "quả chuối"));
-        words.put("3", createWord("cat", "con mèo"));
-//        words.put("4", createWord("dog", "con chó"));
-//        words.put("5", createWord("sun", "mặt trời"));
-//        words.put("6", createWord("moon", "mặt trăng"));
-//        words.put("7", createWord("car", "xe hơi"));
-//        words.put("8", createWord("tree", "cái cây"));
-//        words.put("9", createWord("book", "quyển sách"));
-//        words.put("10", createWord("fish", "con cá"));
+        words.put("1", createWord("apple", false));      // Không phải động vật
+        words.put("2", createWord("banana", false));   // Không phải động vật
+        words.put("3", createWord("cat", true));         // Động vật
+        words.put("4", createWord("dog",  true));         // Động vật
+        words.put("5", createWord("sun",  false));       // Không phải động vật
+        words.put("6", createWord("moon",  false));     // Không phải động vật
+        words.put("7", createWord("car",  false));         // Không phải động vật
+        words.put("8", createWord("tree",  false));       // Không phải động vật
+        words.put("9", createWord("fish",  true));         // Động vật
+        words.put("10", createWord("lion",  true));         // Động vật
+
+        return words;
+    }
+    private Map<String, Object> wordsFamilyInit() {
+        Map<String, Object> words = new HashMap<>();
+        words.put("1", createWord("father", true));        // Gia đình
+        words.put("2", createWord("mother", true));        // Gia đình
+        words.put("3", createWord("son", true));           // Gia đình
+        words.put("4", createWord("banana", false));       // Không phải gia đình
+        words.put("5", createWord("cat", false));          // Không phải gia đình
+        words.put("6", createWord("aunt", true));          // Gia đình
+        words.put("7", createWord("car", false));          // Không phải gia đình
+        words.put("8", createWord("tree", false));         // Không phải gia đình
+        words.put("9", createWord("cousin", true));        // Gia đình
+        words.put("10", createWord("dog", false));         // Không phải gia đình
+
         return words;
     }
 
-    private Map<String, Object> createWord(String word, String mean) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("word", word);
-        map.put("mean", mean);
-        return map;
+    private Map<String, Object> createWord(String word, boolean correct) {
+        Map<String, Object> wordData = new HashMap<>();
+        wordData.put("word", word);
+        wordData.put("isCorrect", correct);
+        return wordData;
     }
 
     private Map<String, Object> createWords() {
         Map<String, Object> wordsMap = new HashMap<>();
-        Map<String, Object> allWords = wordsInit();
+        Map<String, Object> allWords = new HashMap<>();
+        if(GlobalVariable.lessonGame.equals("Animals")){
+             allWords = wordsAnimalsInit();
+        }
+        else if(GlobalVariable.lessonGame.equals("Family")){
+            allWords = wordsFamilyInit();
+        }
         Random random = new Random();
 
         int screenWidth = 1080;
@@ -299,7 +353,7 @@ public class WaitingRoomActivity extends AppCompatActivity {
 
             Map<String, Object> wordData = new HashMap<>();
             wordData.put("word", wordObj.get("word"));
-            wordData.put("mean", wordObj.get("mean"));
+            wordData.put("isCorrect", wordObj.get("isCorrect"));
             wordData.put("x", x);
             wordData.put("y", y);
             wordData.put("speed", speed);
@@ -324,7 +378,7 @@ public class WaitingRoomActivity extends AppCompatActivity {
         String body =
                         "🕹️ Cách chơi:\n" +
                         "• Từ vựng tiếng Anh sẽ rơi từ trên xuống như những quả bóng.\n" +
-                        "• Màn hình sẽ hiển thị nghĩa tiếng Việt của từ cần tìm.\n" +
+                        "• Bạn cần hứng những quá bóng có nghĩa trong chủ đề.\n" +
                         "• Di chuyển nhân vật sang trái/phải để hứng đúng từ tiếng Anh có nghĩa trùng khớp.\n" +
                         "• Hứng đúng tất cả từ được yêu cầu trong thời gian nhanh nhất, để giành chiến thắng.\n" +
                         "👑 Đây là trò chơi giúp bạn rèn luyện từ vựng, phản xạ và ghi nhớ siêu nhanh!";

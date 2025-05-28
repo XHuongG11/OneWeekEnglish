@@ -49,7 +49,6 @@
         <activity
             android:name=".activity.SentenceGuessActivity"
             android:exported="false">
-
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
 

@@ -63,6 +63,10 @@ public class RepeatActivity  extends AppCompatActivity
         handleClickButtonClose();
         handleClickButtonSpeaker();
 
+        // load hình anh
+        Glide.with(this)
+                .load(data_words.get(currentIndexWord).getImageUrl())
+                .into(wordImage);
 
         buttonRecord = findViewById(R.id.buttonRecord);
         buttonRecord.setOnClickListener(v -> {
